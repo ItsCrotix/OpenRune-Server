@@ -1,7 +1,6 @@
 package org.rsmod.content.skills.agility
 
 import dev.openrune.types.ObjectServerType
-import dev.openrune.types.SequenceServerType
 import org.rsmod.api.table.agility.AgilityCoursesRow
 import org.rsmod.api.table.agility.AgilityObstaclesRow
 import org.rsmod.map.CoordGrid
@@ -10,7 +9,7 @@ internal class AgilityObstacle(
     val course: AgilityCoursesRow,
     val step: Int,
     val locs: List<ObjectServerType>,
-    val xp: Double,
+    val xpTenths: Int,
     val lanes: List<ObstacleLane>,
     val startMessage: String?,
     val endMessage: String?,
@@ -22,17 +21,22 @@ internal class AgilityObstacle(
         fun loadAll(): List<AgilityObstacle> = AgilityObstaclesRow.all().map(::from)
 
         private fun from(row: AgilityObstaclesRow): AgilityObstacle {
-            val moves =
-                row.moves.groupBy(
+            val actions =
+                row.actions.groupBy(
                     keySelector = { it.t0 },
-                    valueTransform = { ObstacleMove(MoveKind.of(it.t1), it.t2, it.t3, it.t4) },
+                    valueTransform = {
+                        ObstacleAction(it.t1, ActionOp.of(it.t2), it.t3, it.t4, it.t5, it.t6)
+                    },
                 )
-            val lanes = row.lanes.map { (index, start) -> ObstacleLane(start, moves.getValue(index)) }
+            val lanes =
+                row.lanes.map { (index, start) ->
+                    ObstacleLane(start, actions.getValue(index).sortedBy { it.tick })
+                }
             return AgilityObstacle(
                 course = row.course,
                 step = row.step,
                 locs = row.locs,
-                xp = row.xp / 10.0,
+                xpTenths = row.xp,
                 lanes = lanes,
                 startMessage = row.startMessage,
                 endMessage = row.endMessage,
@@ -41,9 +45,10 @@ internal class AgilityObstacle(
     }
 }
 
-internal class ObstacleLane(val start: CoordGrid, val moves: List<ObstacleMove>) {
-    val end: CoordGrid
-        get() = moves.last().dest
+internal class ObstacleLane(val start: CoordGrid, val actions: List<ObstacleAction>) {
+    val lastTick: Int = actions.maxOf { it.tick }
+
+    val end: CoordGrid = actions.lastOrNull { it.op.moves }?.coord ?: start
 
     /**
      * Whether [coords] is on this lane's start side: on its level, within [MAX_START_DISTANCE] of
@@ -66,19 +71,29 @@ internal class ObstacleLane(val start: CoordGrid, val moves: List<ObstacleMove>)
     }
 }
 
-internal class ObstacleMove(
-    val kind: MoveKind,
-    val dest: CoordGrid,
-    val seq: SequenceServerType,
-    val ticks: Int,
+internal class ObstacleAction(
+    val tick: Int,
+    val op: ActionOp,
+    val coord: CoordGrid,
+    val ref: Int,
+    val arg1: Int,
+    val arg2: Int,
 )
 
-internal enum class MoveKind(val id: Int) {
-    Walk(0),
-    Climb(1),
-    Leap(2);
+/** Mirrors the `ACTION_*` ids of the pack's `AgilityObstaclesTable`. */
+internal enum class ActionOp(val id: Int, val moves: Boolean = false) {
+    Step(0, moves = true),
+    Face(1),
+    Anim(2),
+    ResetAnim(3),
+    Sound(4),
+    Balance(5),
+    BalanceOff(6),
+    ExactMove(7, moves = true),
+    Telejump(8, moves = true),
+    Land(9);
 
     companion object {
-        fun of(id: Int): MoveKind = entries.first { it.id == id }
+        fun of(id: Int): ActionOp = entries.first { it.id == id }
     }
 }

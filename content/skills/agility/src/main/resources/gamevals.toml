@@ -23,6 +23,8 @@ agility_draynor_crate = 63015
 [gamevals.varp]
 agility_lap = 63000
 agility_mark_minute = 63001
+agility_laps_gnome_stronghold = 63002
+agility_laps_draynor = 63003
 
 [gamevals.varbit]
 agility_lap_course = 63000

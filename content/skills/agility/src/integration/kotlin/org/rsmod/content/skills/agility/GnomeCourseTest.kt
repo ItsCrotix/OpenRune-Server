@@ -52,6 +52,7 @@ class GnomeCourseTest {
                 "You land on the ground.",
                 "You climb the netting...",
                 "You pull yourself through the pipes.",
+                "Your Gnome Stronghold Agility lap count is: <col=ff0000>1</col>.",
             ),
             messages,
         )

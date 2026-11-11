@@ -19,3 +19,13 @@ endBit = 23
 id = "varp.agility_mark_minute"
 scope = "Perm"
 transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_gnome_stronghold"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_draynor"
+scope = "Perm"
+transmit = "Never"

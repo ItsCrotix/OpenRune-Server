@@ -1,0 +1,17 @@
+[clientscript,command_stick_categories](component $categories, string $names, int $selected)
+cc_deleteall($categories);
+def_int $index = 0;
+def_int $sep = 0;
+def_string $name = "";
+while (string_length($names) > 0) {
+    $sep = string_indexof_string($names, "|", 0);
+    if ($sep = -1) {
+        $name = $names;
+        $names = "";
+    } else {
+        $name = substring($names, 0, $sep);
+        $names = substring($names, calc($sep + 1), string_length($names));
+    }
+    ~command_stick_category_row($categories, $index, $name, $selected);
+    $index = calc($index + 1);
+}

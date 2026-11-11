@@ -1,0 +1,6 @@
+45600	[clientscript,command_stick_init]
+45602	[clientscript,command_stick_categories]
+45604	[clientscript,command_stick_list]
+45606	[clientscript,command_stick_hover]
+45608	[proc,command_stick_category_row]
+45610	[proc,command_stick_list_row]

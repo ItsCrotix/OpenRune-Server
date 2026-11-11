@@ -1,0 +1,122 @@
+[gamevals.obj]
+command_stick = 63478
+
+[gamevals.interface]
+command_stick = 1101
+
+[gamevals.clientscript]
+command_stick_init = 45600
+command_stick_categories = 45602
+command_stick_list = 45604
+command_stick_hover = 45606
+
+[gamevals.varp]
+command_stick = 64905
+
+[gamevals.varbit]
+command_stick_category = 65100
+
+[gamevals.queue]
+command_stick_run = 64901
+
+[gamevals.enum]
+command_stick_categories = 2076
+
+[gamevals.dbtable]
+command_stick_commands = 56001
+
+[gamevals.dbrow]
+command_stick_tele = 58001
+command_stick_telezone = 58002
+command_stick_up = 58003
+command_stick_down = 58004
+command_stick_forward = 58005
+command_stick_backwards = 58006
+command_stick_left = 58007
+command_stick_right = 58008
+command_stick_mypos = 58009
+command_stick_instance_list = 58010
+command_stick_instance_exit = 58011
+command_stick_gauntlet = 58012
+command_stick_item = 58013
+command_stick_spawn = 58014
+command_stick_spawnold = 58015
+command_stick_invclear = 58016
+command_stick_openbank = 58017
+command_stick_craftmat = 58018
+command_stick_pet = 58019
+command_stick_commandstick = 58020
+command_stick_master = 58021
+command_stick_reset = 58022
+command_stick_god = 58023
+command_stick_maxhit = 58024
+command_stick_spellbook_standard = 58025
+command_stick_spellbook_ancients = 58026
+command_stick_spellbook_lunars = 58027
+command_stick_spellbook_arceuus = 58028
+command_stick_gamemode_normal = 58029
+command_stick_gamemode_ironman = 58030
+command_stick_gamemode_uim = 58031
+command_stick_gamemode_hcim = 58032
+command_stick_transmog = 58033
+command_stick_transmog_reset = 58034
+command_stick_die_pvm = 58035
+command_stick_die_pvp = 58036
+command_stick_poison = 58037
+command_stick_venom = 58038
+command_stick_venomclear = 58039
+command_stick_disease = 58040
+command_stick_diseaseclear = 58041
+command_stick_npcadd = 58042
+command_stick_npcgrid = 58043
+command_stick_locadd = 58044
+command_stick_locdel = 58045
+command_stick_anim = 58046
+command_stick_spot = 58047
+command_stick_synth = 58048
+command_stick_npcanim = 58049
+command_stick_npcspot = 58050
+command_stick_npcproj = 58051
+command_stick_varp = 58052
+command_stick_varbit = 58053
+command_stick_getvarp = 58054
+command_stick_getvarbit = 58055
+command_stick_interface = 58056
+command_stick_componentdebug = 58057
+command_stick_testloot = 58058
+command_stick_toalobby = 58059
+command_stick_toababa = 58060
+command_stick_toawardens = 58061
+command_stick_toacomplete = 58062
+command_stick_toanext = 58063
+command_stick_toapoints = 58064
+command_stick_toareward = 58065
+command_stick_baba = 58066
+command_stick_apmeken = 58067
+command_stick_zebak = 58068
+command_stick_akkha = 58069
+command_stick_het = 58070
+command_stick_kephri = 58071
+command_stick_scabaras = 58072
+command_stick_wardens = 58073
+command_stick_doomsim = 58074
+command_stick_gemstonecrab = 58075
+command_stick_gauntletkit = 58076
+command_stick_gauntletkithm = 58077
+command_stick_star = 58078
+command_stick_randomevent = 58079
+command_stick_bots_count = 58080
+command_stick_bots_on = 58081
+command_stick_bots_off = 58082
+command_stick_bots_reset = 58083
+command_stick_bots_here = 58084
+command_stick_echo = 58085
+command_stick_worldtype = 58086
+command_stick_reboot = 58087
+command_stick_slowreboot = 58088
+command_stick_plugins = 58089
+command_stick_loadplugin = 58090
+command_stick_pluginenable = 58091
+command_stick_plugindisable = 58092
+command_stick_pluginreload = 58093
+command_stick_discordlink = 58094

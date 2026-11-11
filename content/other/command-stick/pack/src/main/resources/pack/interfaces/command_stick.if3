@@ -1,0 +1,50 @@
+[[interface]]
+name = "interface.command_stick"
+width = 512
+height = 334
+on_load = ["clientscript.command_stick_init", "component.command_stick:frame", "component.command_stick:list", "component.command_stick:scrollbar"]
+
+[[component]]
+name = "frame"
+type = "layer"
+width = 512
+height = 334
+no_click_through = true
+
+[[component]]
+name = "categories"
+type = "layer"
+x = 22
+y = 44
+width = 150
+height = 232
+
+[[component]]
+name = "list"
+type = "layer"
+x = 178
+y = 44
+width = 294
+height = 232
+scroll_height = 232
+
+[[component]]
+name = "scrollbar"
+type = "layer"
+x = 474
+y = 44
+width = 16
+height = 232
+
+[[component]]
+name = "description"
+type = "text"
+x = 28
+y = 282
+width = 456
+height = 26
+font = "regular"
+color = "#FFFFFF"
+h_align = "left"
+v_align = "center"
+text = "Hover over a command to see what it does."

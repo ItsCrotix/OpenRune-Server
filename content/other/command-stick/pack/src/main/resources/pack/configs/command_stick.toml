@@ -1,0 +1,43 @@
+[[item]]
+id = "obj.command_stick"
+inherit = "obj.tbw_skewer_stick"
+name = "Command stick"
+examine = "Points at whatever needs doing."
+tradeable = false
+ioption1 = "Open commands"
+ioption5 = "Destroy"
+originalColours = [6825, 6585]
+modifiedColours = [7708, 9162]
+
+[item.params]
+"param.destroy_note_title" = "Are you sure you want to destroy your command stick?"
+"param.destroy_note_desc" = "You can get another one with ::commandstick."
+
+[[varp]]
+id = "varp.command_stick"
+scope = "Temp"
+transmit = "Never"
+
+[[varbit]]
+id = "varbit.command_stick_category"
+varp = "varp.command_stick"
+startBit = 0
+endBit = 3
+
+[[enum]]
+isServerOnly = true
+id = "enum.command_stick_categories"
+keyType = "INT"
+valueType = "STRING"
+
+[enum.values]
+0 = "Teleport"
+1 = "Items and bank"
+2 = "Player and stats"
+3 = "NPCs and objects"
+4 = "Animations and effects"
+5 = "Debug"
+6 = "Bosses and raids"
+7 = "World and events"
+8 = "Server and plugins"
+9 = "Other"

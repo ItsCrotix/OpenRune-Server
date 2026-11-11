@@ -57,7 +57,7 @@ object CommandStickTable {
                     if (prompts.isNotEmpty()) {
                         column(
                             PROMPTS,
-                            *prompts.flatMap { listOf(it.first, it.second) }.toTypedArray(),
+                            *prompts.flatMap { listOf<Any>(it.first, it.second) }.toTypedArray(),
                         )
                     }
                     aliases?.let { column(ALIASES, it) }

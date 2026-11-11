@@ -143,4 +143,11 @@ Sword hand-in and ore-pack conversion use all-or-nothing inventory transactions.
 Failed payment leaves the sword, commission and reward state unchanged. Coins go
 to the bank first, then inventory if necessary; Ultimate Ironmen use inventory only.
 
+## Marks of grace
+
+A mark of grace lies for 1000 ticks from the moment it spawns, whether or not its owner stays
+logged in; in OSRS its timer pauses while the owner is logged out. The spawn timer is one Perm
+varp holding the real-time minute of the last spawn, so it survives logout and world changes, and
+it is shared by every course: the wiki does not say whether the timer is per course.
+
 [magic-numbers]: https://en.wikipedia.org/wiki/Magic_number_(programming)

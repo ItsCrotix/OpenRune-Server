@@ -1,0 +1,21 @@
+[[varp]]
+id = "varp.agility_lap"
+scope = "Temp"
+transmit = "Never"
+
+[[varbit]]
+id = "varbit.agility_lap_course"
+varp = "varp.agility_lap"
+startBit = 0
+endBit = 15
+
+[[varbit]]
+id = "varbit.agility_lap_step"
+varp = "varp.agility_lap"
+startBit = 16
+endBit = 23
+
+[[varp]]
+id = "varp.agility_mark_minute"
+scope = "Perm"
+transmit = "Never"

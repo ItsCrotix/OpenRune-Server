@@ -6,6 +6,7 @@ if ($index = $selected) {
     $trans = 190;
     $colour = ^yellow;
 }
+def_int $hover = calc($trans - 30);
 cc_create($categories, ^iftype_rectangle, calc($index * 2));
 cc_setsize(0, 20, ^setsize_minus, ^setsize_abs);
 cc_setposition(0, $y, ^setpos_abs_left, ^setpos_abs_top);
@@ -14,7 +15,7 @@ cc_setfill(true);
 cc_settrans($trans);
 cc_setop(1, "Select");
 cc_setopbase("<col=ff9040><$name></col>");
-cc_setonmouserepeat("cc_settrans(event_com, event_comsubid, 200, null)");
+cc_setonmouserepeat("cc_settrans(event_com, event_comsubid, $hover, null)");
 cc_setonmouseleave("cc_settrans(event_com, event_comsubid, $trans, null)");
 cc_create($categories, ^iftype_text, calc($index * 2 + 1));
 cc_setsize(8, 20, ^setsize_minus, ^setsize_abs);

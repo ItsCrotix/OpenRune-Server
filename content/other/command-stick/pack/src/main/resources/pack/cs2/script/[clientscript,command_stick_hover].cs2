@@ -8,6 +8,6 @@ if (cc_find($list, $sub) = true) {
 }
 if ($hovered = 1) {
     if_settext($text, $description);
-} else {
+} else if (compare(if_gettext($description), $text) = 0) {
     if_settext("Hover over a command to see what it does.", $description);
 }

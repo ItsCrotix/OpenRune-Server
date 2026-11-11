@@ -1,0 +1,29 @@
+[gamevals.dbtable]
+agility_courses = 63000
+agility_obstacles = 63001
+
+[gamevals.dbrow]
+agility_course_gnome_stronghold = 63000
+agility_course_draynor = 63001
+agility_gnome_log_balance = 63002
+agility_gnome_obstacle_net_1 = 63003
+agility_gnome_tree_branch_up = 63004
+agility_gnome_balancing_rope = 63005
+agility_gnome_tree_branch_down = 63006
+agility_gnome_obstacle_net_2 = 63007
+agility_gnome_obstacle_pipe = 63008
+agility_draynor_rough_wall = 63009
+agility_draynor_tightrope_1 = 63010
+agility_draynor_tightrope_2 = 63011
+agility_draynor_narrow_wall = 63012
+agility_draynor_wall = 63013
+agility_draynor_gap = 63014
+agility_draynor_crate = 63015
+
+[gamevals.varp]
+agility_lap = 63000
+agility_mark_minute = 63001
+
+[gamevals.varbit]
+agility_lap_course = 63000
+agility_lap_step = 63001

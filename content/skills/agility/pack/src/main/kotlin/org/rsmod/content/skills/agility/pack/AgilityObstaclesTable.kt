@@ -9,6 +9,10 @@ import dev.openrune.definition.util.VarType
  * success curve can fail, which plays the matching fail lane instead. Xp is in tenths.
  *
  * Lanes come from live captures of the courses, except where a course file says otherwise.
+ *
+ * Several obstacles of one course can share a loc (the Barbarian Outpost walls), as can courses
+ * that start alike and split later (Shayzien, Colossal Wyrm); each is its own row. A row with step
+ * [RECOVERY_STEP] is a way back onto a course after a fall and is not part of the lap.
  */
 object AgilityObstaclesTable {
     const val COURSE = 0
@@ -23,6 +27,10 @@ object AgilityObstaclesTable {
     const val FAIL_DAMAGE = 9
     const val DIARY_XP = 10
     const val AP_RANGE = 11
+    const val REQUIREMENT = 12
+    const val LAND_SPAWN_OBJ = 13
+    const val LAND_SPAWN_TILES = 14
+    const val REQUIREMENT_OBJS = 15
 
     const val ACTION_STEP = 0
     const val ACTION_FACE = 1
@@ -36,6 +44,7 @@ object AgilityObstaclesTable {
     const val ACTION_LAND = 9
     const val ACTION_HIT = 10
     const val ACTION_EXACT_PATH = 11
+    const val ACTION_FACE_ANGLE = 12
 
     fun obstacles() =
         dbTable("dbtable.agility_obstacles", serverOnly = true) {
@@ -48,9 +57,13 @@ object AgilityObstaclesTable {
             column("messages", MESSAGES, VarType.INT, VarType.INT, VarType.STRING)
             column("success", SUCCESS, VarType.INT, VarType.INT)
             column("fail_actions", FAIL_ACTIONS, *ACTION_TYPES)
-            column("fail_damage", FAIL_DAMAGE, VarType.INT, VarType.INT, VarType.INT)
+            column("fail_damage", FAIL_DAMAGE, VarType.INT, VarType.INT, VarType.INT, VarType.INT)
             column("diary_xp", DIARY_XP, VarType.INT, VarType.INT)
             column("ap_range", AP_RANGE, VarType.INT)
+            column("requirement", REQUIREMENT, VarType.INT)
+            column("land_spawn_obj", LAND_SPAWN_OBJ, VarType.OBJ)
+            column("land_spawn_tiles", LAND_SPAWN_TILES, VarType.COORDGRID)
+            column("requirement_objs", REQUIREMENT_OBJS, VarType.OBJ)
 
             gnomeStrongholdObstacles()
             draynorObstacles()
@@ -62,7 +75,20 @@ object AgilityObstaclesTable {
             pollnivneachObstacles()
             rellekkaObstacles()
             ardougneObstacles()
+            barbarianObstacles()
+            wildernessObstacles()
+            prifddinasObstacles()
+            apeAtollObstacles()
+            werewolfObstacles()
+            shayzienObstacles()
+            wyrmObstacles()
+            penguinObstacles()
         }
+
+    const val RECOVERY_STEP = -1
+
+    const val REQUIREMENT_NINJA_GREEGREE = 1
+    const val REQUIREMENT_CROSSBOW_GRAPPLE = 2
 
     private val ACTION_TYPES =
         arrayOf(

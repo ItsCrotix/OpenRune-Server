@@ -119,7 +119,9 @@ internal fun DBTableBuilder.alKharidObstacles() {
                 next()
                 balance(LOG_BALANCE)
                 sound(TIGHTROPE_SYNTH, loops = 6)
-                walkTo(tile(3302, 3186, 3))
+                walkTo(tile(3303, 3186, 3))
+                next(2)
+                step(tile(3302, 3186, 3))
                 balanceOff()
                 land()
                 next()
@@ -423,6 +425,7 @@ internal fun DBTableBuilder.canifisObstacles() {
                     angle = FACE_EAST,
                     from = tile(3478, 3486, 2),
                     to = tile(3480, 3484, 2),
+                    faceAngle = false,
                 )
                 anim(RUN_UP)
                 next()

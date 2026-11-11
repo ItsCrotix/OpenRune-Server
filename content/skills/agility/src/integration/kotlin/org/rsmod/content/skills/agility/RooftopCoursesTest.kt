@@ -215,7 +215,9 @@ class RooftopCoursesTest {
                 row.lanes.map { it.t1 } + ends
             }
         val blocked =
-            tiles.distinct().filter { deps.collision[it.x, it.z, it.level] and blocking != 0 }
+            (tiles.distinct() - CAPTURED_OFF_FLOOR).filter {
+                deps.collision[it.x, it.z, it.level] and blocking != 0
+            }
         assertEquals(emptyList<CoordGrid>(), blocked)
     }
 
@@ -229,6 +231,9 @@ class RooftopCoursesTest {
     private companion object {
         const val FALL_TELEJUMP = 8
         val LANE_MOVES = setOf(0, 7, 8)
+
+        /** Live puts the player on these tiles although the map flags no floor there. */
+        val CAPTURED_OFF_FLOOR = setOf(CoordGrid(2243, 3394, 2))
         const val SEERS_ROW = "dbrow.agility_course_seers"
         const val ARDOUGNE_ROW = "dbrow.agility_course_ardougne"
         const val CANIFIS_ROW = "dbrow.agility_course_canifis"

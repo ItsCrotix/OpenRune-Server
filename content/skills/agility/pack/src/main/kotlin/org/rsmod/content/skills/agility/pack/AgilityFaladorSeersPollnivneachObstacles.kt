@@ -60,6 +60,7 @@ internal fun DBTableBuilder.faladorObstacles() {
                     sound(HANDHOLDS_SYNTH, delay = 35)
                     next()
                 }
+                next()
                 exactMove(tile(3050, 3357, 2), delay1 = 34, delay2 = 60, angle = FACE_WEST)
                 anim(HANDHOLDS_LAST)
                 sound(HANDHOLDS_SYNTH, delay = 35)
@@ -285,7 +286,14 @@ internal fun DBTableBuilder.pollnivneachObstacles() {
         apRange(2)
         lanes(
             lane(tile(3349, 2968, 1)) {
-                exactMove(tile(3350, 2967, 1), delay1 = 15, delay2 = 29, angle = FACE_NORTH)
+                exactMove(
+                    tile(3350, 2967, 1),
+                    delay1 = 15,
+                    delay2 = 29,
+                    angle = FACE_NORTH,
+                    from = tile(3349, 2967, 1),
+                    faceAngle = false,
+                )
                 anim(RUN_UP, delay = 15)
                 next()
                 exactMove(
@@ -313,7 +321,7 @@ internal fun DBTableBuilder.pollnivneachObstacles() {
         fails(
             60,
             300,
-            FallDamage(min = 2, max = 2, hpDivisor = 17),
+            FallDamage(min = 2, max = 2, hpShare = 1 to 17),
             lane(tile(3349, 2968, 1)) { fall(tile(3349, 2970, 0)) },
         )
     }

@@ -69,3 +69,53 @@ transmit = "Never"
 id = "varp.agility_laps_ardougne"
 scope = "Perm"
 transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_barbarian"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_wilderness"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_prifddinas"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_ape_atoll"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_werewolf"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_shayzien_basic"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_shayzien_advanced"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_wyrm_basic"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_wyrm_advanced"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_penguin"
+scope = "Perm"
+transmit = "Never"

@@ -151,4 +151,39 @@ varp holding the real-time minute from which marks may roll again (three minutes
 two when a course's diary shortens it), so it survives logout and world changes, and it is shared
 by every course: the wiki does not say whether the timer is per course.
 
+## Agility transformations
+
+There is no penguin or monkey transformation yet. The Penguin course runs for anyone who has
+started Cold War, playing the penguin seqs on a human, and has no crushers: they are npcs worth 55
+xp a lap. Its lanes are guesses, and on the collision map the gate cannot be walked to from the
+ice. Ape Atoll checks for a worn small or medium ninja greegree or the Kruk greegree, as live
+does, but the player stays human while wearing it.
+
+## Agility shared course starts
+
+Shayzien's and the Colossal Wyrm's basic and advanced courses share their first obstacles. Those
+pay the basic course's xp, so the Shayzien ladder gives 5.5 where live gives 6 on the advanced
+course, and the lap counts for whichever course the player splits off to.
+
+## Agility falls
+
+The wiki says obstacles on the Barbarian Outpost, Ape Atoll, Penguin and Shayzien advanced
+courses and the Werewolf zip line can fail, but not where a fall lands, so they never fail here.
+The Wilderness and Prifddinas success curves are guesses shaped to the wiki's notes: Wilderness
+obstacles still fail at 99, Prifddinas ones stop failing at 91. A failed obstacle can be retried
+without losing the lap.
+
+## Werewolf stick
+
+The stick stays in the inventory over a logout, where live removes it, and the Agility Boss throws
+no replacement for a forgotten one. Nothing stops a player holding two sticks if they drop one and
+run another lap before picking it up.
+
+## Agility course extras
+
+The Wilderness Agility dispenser (fee, tickets, loot), Prifddinas portals and crystal shards,
+Colossal Wyrm termites and bone shards, and the lap time and personal best messages are not built.
+Ape Atoll and the Penguin course need only part of a quest on live; here they check that the quest
+is started.
+
 [magic-numbers]: https://en.wikipedia.org/wiki/Magic_number_(programming)

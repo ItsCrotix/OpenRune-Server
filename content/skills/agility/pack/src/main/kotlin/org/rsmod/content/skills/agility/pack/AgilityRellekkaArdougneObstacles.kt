@@ -155,17 +155,15 @@ internal fun DBTableBuilder.ardougneObstacles() {
     row("dbrow.agility_ardougne_steep_roof") {
         obstacle(ARDOUGNE, step = 5, xp = 570, "loc.rooftops_ardy_wallcrossing")
         lanes(
-            lane(tile(2653, 3300, 3)) {
+            lane(tile(2653, 3301, 3)) {
                 anim(INTO_SIDESTEP)
                 balance(SIDESTEP)
-                step(tile(2654, 3300, 3))
+                step(tile(2654, 3301, 3))
                 next()
                 sound(LEDGE_SYNTH, loops = 3)
                 step(tile(2655, 3300, 2))
                 next()
                 step(tile(2656, 3299, 2))
-                next()
-                step(tile(2657, 3298, 2))
                 next()
                 balanceOff()
                 anim(OUT_OF_SIDESTEP)
@@ -176,9 +174,9 @@ internal fun DBTableBuilder.ardougneObstacles() {
 
     row("dbrow.agility_ardougne_gap_4") {
         obstacle(ARDOUGNE, step = 6, xp = 6250, "loc.rooftops_ardy_jump_4")
-        apRange(2)
+        apRange(3)
         lanes(
-            lane(tile(2657, 3298, 2)) {
+            lane(tile(2656, 3299, 2)) {
                 face(tile(2659, 3297, 2))
                 next()
                 jumpDown(tile(2668, 3297, 0))

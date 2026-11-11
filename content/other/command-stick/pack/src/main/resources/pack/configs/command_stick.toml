@@ -1,8 +1,13 @@
 [[item]]
 id = "obj.command_stick"
-inherit = "obj.tbw_skewer_stick"
 name = "Command stick"
 examine = "Points at whatever needs doing."
+inventoryModel = 8870
+zoom2d = 1710
+xan2d = 300
+yan2d = 436
+xOffset2d = -3
+yOffset2d = 45
 tradeable = false
 ioption1 = "Open commands"
 ioption5 = "Destroy"

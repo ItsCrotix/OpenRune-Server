@@ -20,7 +20,7 @@ command_stick_category = 65100
 command_stick_run = 64901
 
 [gamevals.enum]
-command_stick_categories = 2076
+command_stick_categories = 64910
 
 [gamevals.dbtable]
 command_stick_commands = 56001

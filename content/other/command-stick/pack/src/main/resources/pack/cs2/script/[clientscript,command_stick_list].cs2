@@ -1,0 +1,23 @@
+[clientscript,command_stick_list](component $list, component $scrollbar, component $description, string $entries)
+cc_deleteall($list);
+if_settext("Hover over a command to see what it does.", $description);
+def_int $index = 0;
+def_int $sep = 0;
+def_int $split = 0;
+def_string $entry = "";
+while (string_length($entries) > 0) {
+    $sep = string_indexof_string($entries, "|", 0);
+    if ($sep = -1) {
+        $entry = $entries;
+        $entries = "";
+    } else {
+        $entry = substring($entries, 0, $sep);
+        $entries = substring($entries, calc($sep + 1), string_length($entries));
+    }
+    $split = string_indexof_string($entry, "~", 0);
+    ~command_stick_list_row($list, $description, $index, substring($entry, 0, $split), substring($entry, calc($split + 1), string_length($entry)));
+    $index = calc($index + 1);
+}
+if_setscrollsize(0, calc($index * 20), $list);
+if_setscrollpos(0, 0, $list);
+~scrollbar_resize($scrollbar, $list, 0);

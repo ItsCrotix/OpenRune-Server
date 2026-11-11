@@ -1,0 +1,13 @@
+[proc,command_stick_list_row](component $list, component $description, int $index, string $name, string $text)
+cc_create($list, ^iftype_text, $index);
+cc_setsize(8, 20, ^setsize_minus, ^setsize_abs);
+cc_setposition(4, calc($index * 20), ^setpos_abs_left, ^setpos_abs_top);
+cc_settextfont(p12_full);
+cc_settextalign(^settextalign_left, ^settextalign_centre, 0);
+cc_settextshadow(true);
+cc_setcolour(^white);
+cc_settext($name);
+cc_setop(1, "Run");
+cc_setopbase("<col=ff9040><$name></col>");
+cc_setonmouseover("command_stick_hover(event_com, event_comsubid, $description, $text, 1)");
+cc_setonmouseleave("command_stick_hover(event_com, event_comsubid, $description, $text, 0)");

@@ -1,0 +1,13 @@
+[clientscript,command_stick_hover](component $list, int $sub, component $description, string $text, int $hovered)
+if (cc_find($list, $sub) = true) {
+    if ($hovered = 1) {
+        cc_setcolour(^yellow);
+    } else {
+        cc_setcolour(^white);
+    }
+}
+if ($hovered = 1) {
+    if_settext($text, $description);
+} else {
+    if_settext("Hover over a command to see what it does.", $description);
+}

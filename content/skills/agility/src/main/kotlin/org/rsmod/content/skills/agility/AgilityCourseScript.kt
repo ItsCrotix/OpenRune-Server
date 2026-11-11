@@ -55,7 +55,6 @@ class AgilityCourseScript @Inject constructor(private val marks: MarksOfGrace) :
     }
 
     private suspend fun ProtectedAccess.cross(obstacle: AgilityObstacle, lastStep: Int) {
-        arriveDelay()
         val course = obstacle.course
         if (player.agilityLvl < course.level) {
             // UNVERIFIED: wording guessed.
@@ -69,6 +68,8 @@ class AgilityCourseScript @Inject constructor(private val marks: MarksOfGrace) :
             return
         }
         val lane = obstacle.lanes[laneIndex]
+        lane.opMessages.forEach { mes(it.text, ChatType.Spam) }
+        arriveDelay()
         if (obstacle.step == 0) {
             player.helperHighlightedCourse = course.helperCourse
             // UNVERIFIED: captures show only the highlighted course changing; live likely sets the
@@ -159,6 +160,7 @@ class AgilityCourseScript @Inject constructor(private val marks: MarksOfGrace) :
                 exactMove(action, from = path?.coord ?: coords, to = path?.ref?.let(::CoordGrid))
             }
             ActionOp.Telejump -> telejump(action.coord, TeleportType.Exempt)
+            ActionOp.FaceAngle -> player.pendingFaceAngle = EntityFaceAngle(action.ref)
             ActionOp.ExactPath,
             ActionOp.Land,
             ActionOp.Hit -> Unit
@@ -168,14 +170,12 @@ class AgilityCourseScript @Inject constructor(private val marks: MarksOfGrace) :
     /**
      * Puts the player on the move's tile and has the client draw them gliding from [from] to [to]
      * (the tile itself unless the lane recorded another), as live draws some obstacles a tile or
-     * two off where the player ends up. Live sends the move's angle as the face angle on the same
-     * tick; without it the client turns the player the long way round between moves.
+     * two off where the player ends up.
      */
     private fun ProtectedAccess.exactMove(move: ObstacleAction, from: CoordGrid, to: CoordGrid?) {
         val dest = move.coord
         val end = to ?: dest
         telejump(dest, TeleportType.Exempt)
-        player.pendingFaceAngle = EntityFaceAngle(move.ref)
         player.pendingExactMove =
             EntityExactMove(
                 deltaX1 = from.x - dest.x,

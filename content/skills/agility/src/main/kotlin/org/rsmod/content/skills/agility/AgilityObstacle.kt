@@ -113,12 +113,15 @@ internal class ObstacleLane(
 
     val end: CoordGrid = actions.lastOrNull { it.op.moves }?.coord ?: start
 
+    val opMessages: List<LaneMessage> = messages.filter { it.tick == OP_TICK }
+
     /** Whether [coords] is on the start's level and within [MAX_START_DISTANCE] of it. */
     fun canStartFrom(coords: CoordGrid): Boolean =
         coords.level == start.level && coords.chebyshevDistance(start) <= MAX_START_DISTANCE
 
     private companion object {
         const val MAX_START_DISTANCE = 4
+        const val OP_TICK = -1
     }
 }
 
@@ -144,7 +147,8 @@ internal enum class ActionOp(val id: Int, val moves: Boolean = false) {
     Telejump(8, moves = true),
     Land(9),
     Hit(10),
-    ExactPath(11);
+    ExactPath(11),
+    FaceAngle(12);
 
     companion object {
         fun of(id: Int): ActionOp = entries.first { it.id == id }

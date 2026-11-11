@@ -10,6 +10,7 @@ import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_BALANC
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_EXACT_MOVE
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_EXACT_PATH
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_FACE
+import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_FACE_ANGLE
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_HIT
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_LAND
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.ACTION_RESET_ANIM
@@ -56,6 +57,8 @@ internal const val HURDLE_SYNTH = "synth.hurdle"
 internal const val HANDHOLDS_SYNTH = "synth.handholds_loop"
 internal const val FALL_LAND_SYNTH = "synth.fall_land"
 
+internal const val OP_TICK = -1
+
 internal const val FACE_SOUTH = 0
 internal const val FACE_WEST = 512
 internal const val FACE_NORTH = 1024
@@ -93,6 +96,11 @@ internal class LaneBuilder(start: CoordGrid) {
 
     fun message(text: String) {
         messages += LaneMessage(tick, text)
+    }
+
+    /** A message sent when the obstacle is clicked, a tick before the lane starts after a walk. */
+    fun opMessage(text: String) {
+        messages += LaneMessage(OP_TICK, text)
     }
 
     fun step(dest: CoordGrid) {
@@ -139,7 +147,8 @@ internal class LaneBuilder(start: CoordGrid) {
     /**
      * Moves the player to [dest] while the client draws them gliding between [delay1] and
      * [delay2]. The glide runs from the player's tile to [dest] unless [from]/[to] give the path
-     * live draws, which on some obstacles is a tile or two off the tile the player ends on.
+     * live draws, which on some obstacles is a tile or two off the tile the player ends on. Live
+     * sends [angle] as the face angle too, except on the few moves [faceAngle] turns off.
      */
     fun exactMove(
         dest: CoordGrid,
@@ -148,8 +157,12 @@ internal class LaneBuilder(start: CoordGrid) {
         angle: Int,
         from: CoordGrid? = null,
         to: CoordGrid? = null,
+        faceAngle: Boolean = true,
     ) {
         actions += LaneAction(tick, ACTION_EXACT_MOVE, dest, angle, delay1, delay2)
+        if (faceAngle) {
+            actions += LaneAction(tick, ACTION_FACE_ANGLE, ref = angle)
+        }
         if (from != null || to != null) {
             val path = (to ?: dest).packed
             actions += LaneAction(tick, ACTION_EXACT_PATH, from ?: position, ref = path)

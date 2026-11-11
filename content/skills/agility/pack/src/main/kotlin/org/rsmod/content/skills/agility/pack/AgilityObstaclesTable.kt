@@ -36,6 +36,7 @@ object AgilityObstaclesTable {
     const val ACTION_LAND = 9
     const val ACTION_HIT = 10
     const val ACTION_EXACT_PATH = 11
+    const val ACTION_FACE_ANGLE = 12
 
     fun obstacles() =
         dbTable("dbtable.agility_obstacles", serverOnly = true) {

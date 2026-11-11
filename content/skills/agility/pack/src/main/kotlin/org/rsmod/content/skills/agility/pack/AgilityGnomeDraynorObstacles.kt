@@ -27,6 +27,7 @@ internal fun DBTableBuilder.gnomeStrongholdObstacles() {
                 sound(LOG_SYNTH)
                 next()
                 balanceOff()
+                face(tile(2474, 3429, 0))
                 message("...You make it safely to the other side.")
                 land()
             }
@@ -39,7 +40,7 @@ internal fun DBTableBuilder.gnomeStrongholdObstacles() {
             *(2471..2476)
                 .map { x ->
                     lane(tile(x, 3426, 0)) {
-                        message(NET_MESSAGE)
+                        opMessage(NET_MESSAGE)
                         anim(CLIMB)
                         next()
                         telejump(tile(netX(x), 3423, 1))
@@ -54,7 +55,7 @@ internal fun DBTableBuilder.gnomeStrongholdObstacles() {
         obstacle(GNOME, step = 2, xp = 65, "loc.climbing_branch")
         lanes(
             lane(tile(2473, 3423, 1)) {
-                message("You climb the tree...")
+                opMessage("You climb the tree...")
                 anim(CLIMB)
                 next()
                 message("...To the platform above.")
@@ -87,7 +88,7 @@ internal fun DBTableBuilder.gnomeStrongholdObstacles() {
             *listOf(tile(2485, 3419, 2), tile(2486, 3420, 2))
                 .map { start ->
                     lane(start) {
-                        message("You climb down the tree...")
+                        opMessage("You climb down the tree...")
                         anim(CLIMB)
                         next()
                         message("You land on the ground.")
@@ -105,7 +106,7 @@ internal fun DBTableBuilder.gnomeStrongholdObstacles() {
             *(2483..2488)
                 .map { x ->
                     lane(tile(x, 3425, 0)) {
-                        message(NET_MESSAGE)
+                        opMessage(NET_MESSAGE)
                         anim(CLIMB)
                         next()
                         step(tile(x - (x - 2483) % 2, 3428, 0))

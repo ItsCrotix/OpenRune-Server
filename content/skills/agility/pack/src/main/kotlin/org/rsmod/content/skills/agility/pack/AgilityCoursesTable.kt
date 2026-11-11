@@ -215,7 +215,7 @@ object AgilityCoursesTable {
                 markChance = 2 to 3,
                 markRerolls = listOf("varbit.ardougne_diary_elite_complete" to 25),
                 markShortTimer = "varbit.ardougne_diary_elite_complete" to 2,
-                markTiles = listOf(tile(2658, 3298, 2)),
+                markTiles = listOf(tile(2657, 3294, 3)),
             )
 
             // UNVERIFIED: lap count names (only Wilderness and Prifddinas are captured), the mark

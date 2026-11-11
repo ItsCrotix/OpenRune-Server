@@ -152,18 +152,22 @@ internal fun DBTableBuilder.ardougneObstacles() {
         lanes(lane(tile(2653, 3310, 3)) { gap(tile(2651, 3307, 3), tile(2651, 3308, 3)) })
     }
 
+    // UNVERIFIED: the crossing runs on level 3 to where the roof picks up again at 2657,3295, though
+    // the map flags no floor there; level 2 below it is open air.
     row("dbrow.agility_ardougne_steep_roof") {
         obstacle(ARDOUGNE, step = 5, xp = 570, "loc.rooftops_ardy_wallcrossing")
         lanes(
-            lane(tile(2653, 3301, 3)) {
+            lane(tile(2653, 3300, 3)) {
                 anim(INTO_SIDESTEP)
                 balance(SIDESTEP)
-                step(tile(2654, 3301, 3))
+                step(tile(2654, 3300, 3))
                 next()
                 sound(LEDGE_SYNTH, loops = 3)
-                step(tile(2655, 3300, 2))
+                step(tile(2655, 3299, 3))
                 next()
-                step(tile(2656, 3299, 2))
+                step(tile(2656, 3298, 3))
+                next()
+                walkTo(tile(2657, 3294, 3))
                 next()
                 balanceOff()
                 anim(OUT_OF_SIDESTEP)
@@ -174,10 +178,10 @@ internal fun DBTableBuilder.ardougneObstacles() {
 
     row("dbrow.agility_ardougne_gap_4") {
         obstacle(ARDOUGNE, step = 6, xp = 6250, "loc.rooftops_ardy_jump_4")
-        apRange(3)
+        apRange(2)
         lanes(
-            lane(tile(2656, 3299, 2)) {
-                face(tile(2659, 3297, 2))
+            lane(tile(2657, 3294, 3)) {
+                face(tile(2659, 3295, 3))
                 next()
                 jumpDown(tile(2668, 3297, 0))
                 land()

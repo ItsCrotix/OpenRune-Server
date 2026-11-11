@@ -12,7 +12,7 @@ internal val ROOFTOP_PLACEMENTS =
         Placement("loc.rooftops_ardy_jump", CoordGrid(2670, 3310, 3), 3, 10),
         Placement("loc.rooftops_ardy_jump_2", CoordGrid(2653, 3317, 3), 2, 10),
         Placement("loc.rooftops_ardy_jump_3", CoordGrid(2653, 3308, 3), 2, 10),
-        Placement("loc.rooftops_ardy_jump_4", CoordGrid(2656, 3296, 2), 1, 10),
+        Placement("loc.rooftops_ardy_jump_4", CoordGrid(2656, 3296, 3), 1, 10),
         Placement("loc.rooftops_ardy_plank", CoordGrid(2661, 3318, 3), 3, 22),
         Placement("loc.rooftops_ardy_wallclimb", CoordGrid(2673, 3298, 0), 1, 5),
         Placement("loc.rooftops_ardy_wallcrossing", CoordGrid(2654, 3300, 3), 1, 11),

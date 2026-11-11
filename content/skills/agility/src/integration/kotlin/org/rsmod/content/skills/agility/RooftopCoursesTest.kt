@@ -198,7 +198,10 @@ class RooftopCoursesTest {
                     row.failActions.filter { it.t2 == FALL_TELEJUMP }.map { it.t3 }
                 }
         val blocking = CollisionFlag.BLOCK_WALK or CollisionFlag.LOC or CollisionFlag.GROUND_DECOR
-        val blocked = tiles.filter { deps.collision[it.x, it.z, it.level] and blocking != 0 }
+        val blocked =
+            (tiles - OFF_FLOOR_TILES).filter {
+                deps.collision[it.x, it.z, it.level] and blocking != 0
+            }
         assertEquals(emptyList<CoordGrid>(), blocked)
     }
 
@@ -215,7 +218,7 @@ class RooftopCoursesTest {
                 row.lanes.map { it.t1 } + ends
             }
         val blocked =
-            (tiles.distinct() - CAPTURED_OFF_FLOOR).filter {
+            (tiles.distinct() - OFF_FLOOR_TILES).filter {
                 deps.collision[it.x, it.z, it.level] and blocking != 0
             }
         assertEquals(emptyList<CoordGrid>(), blocked)
@@ -232,8 +235,11 @@ class RooftopCoursesTest {
         const val FALL_TELEJUMP = 8
         val LANE_MOVES = setOf(0, 7, 8)
 
-        /** Live puts the player on these tiles although the map flags no floor there. */
-        val CAPTURED_OFF_FLOOR = setOf(CoordGrid(2243, 3394, 2))
+        /**
+         * Tiles live puts the player on although the map flags no floor there: the captured
+         * Prifddinas treetop landing and Ardougne's last roof, where the roof npc stands too.
+         */
+        val OFF_FLOOR_TILES = setOf(CoordGrid(2243, 3394, 2), CoordGrid(2657, 3294, 3))
         const val SEERS_ROW = "dbrow.agility_course_seers"
         const val ARDOUGNE_ROW = "dbrow.agility_course_ardougne"
         const val CANIFIS_ROW = "dbrow.agility_course_canifis"

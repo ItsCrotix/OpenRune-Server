@@ -55,7 +55,10 @@ object CommandStickTable {
                     column(CATEGORY, category)
                     fixedArgs?.let { column(FIXED_ARGS, it) }
                     if (prompts.isNotEmpty()) {
-                        column(PROMPTS, *prompts.flatMap { listOf(it.first, it.second) }.toTypedArray())
+                        column(
+                            PROMPTS,
+                            *prompts.flatMap { listOf(it.first, it.second) }.toTypedArray(),
+                        )
                     }
                     aliases?.let { column(ALIASES, it) }
                     description?.let { column(DESCRIPTION, it) }
@@ -72,7 +75,12 @@ object CommandStickTable {
                 "tele",
                 "Teleport to coordinates",
                 TELEPORT,
-                prompts = listOf(NUMBER to "X coordinate", NUMBER to "Y coordinate", NUMBER to "Level (0-3)"),
+                prompts =
+                    listOf(
+                        NUMBER to "X coordinate",
+                        NUMBER to "Y coordinate",
+                        NUMBER to "Level (0-3)",
+                    ),
             )
             command(
                 "dbrow.command_stick_telezone",
@@ -83,7 +91,13 @@ object CommandStickTable {
             )
             command("dbrow.command_stick_up", "up", "Go up a level", TELEPORT)
             command("dbrow.command_stick_down", "down", "Go down a level", TELEPORT)
-            command("dbrow.command_stick_forward", "forward", "Step north", TELEPORT, prompts = tiles)
+            command(
+                "dbrow.command_stick_forward",
+                "forward",
+                "Step north",
+                TELEPORT,
+                prompts = tiles,
+            )
             command(
                 "dbrow.command_stick_backwards",
                 "backwards",
@@ -121,7 +135,13 @@ object CommandStickTable {
             )
             command("dbrow.command_stick_spawn", "spawn", "Open the item spawner", ITEMS)
             command("dbrow.command_stick_spawnold", "spawnold", "Spawn items by search", ITEMS)
-            command("dbrow.command_stick_invclear", "invclear", "Clear inventory", ITEMS, confirm = true)
+            command(
+                "dbrow.command_stick_invclear",
+                "invclear",
+                "Clear inventory",
+                ITEMS,
+                confirm = true,
+            )
             command("dbrow.command_stick_openbank", "openbank", "Open bank", ITEMS)
             command(
                 "dbrow.command_stick_craftmat",
@@ -131,7 +151,12 @@ object CommandStickTable {
                 prompts = listOf(ITEM to "Materials for which item?", NUMBER to "How many?"),
             )
             command("dbrow.command_stick_pet", "pet", "Award a pet", ITEMS)
-            command("dbrow.command_stick_commandstick", "commandstick", "Get a command stick", ITEMS)
+            command(
+                "dbrow.command_stick_commandstick",
+                "commandstick",
+                "Get a command stick",
+                ITEMS,
+            )
 
             command("dbrow.command_stick_master", "master", "Max all stats", PLAYER)
             command("dbrow.command_stick_reset", "reset", "Reset all stats", PLAYER, confirm = true)
@@ -358,8 +383,18 @@ object CommandStickTable {
 
             command("dbrow.command_stick_toalobby", "toalobby", "ToA: go to the lobby", BOSSES)
             command("dbrow.command_stick_toababa", "toababa", "ToA: enter Ba-Ba's room", BOSSES)
-            command("dbrow.command_stick_toawardens", "toawardens", "ToA: enter the Wardens' room", BOSSES)
-            command("dbrow.command_stick_toacomplete", "toacomplete", "ToA: complete the current room", BOSSES)
+            command(
+                "dbrow.command_stick_toawardens",
+                "toawardens",
+                "ToA: enter the Wardens' room",
+                BOSSES,
+            )
+            command(
+                "dbrow.command_stick_toacomplete",
+                "toacomplete",
+                "ToA: complete the current room",
+                BOSSES,
+            )
             command("dbrow.command_stick_toanext", "toanext", "ToA: go to the next room", BOSSES)
             command("dbrow.command_stick_toapoints", "toapoints", "ToA: show reward points", BOSSES)
             command(
@@ -399,7 +434,9 @@ object CommandStickTable {
                 "ToA: Akkha mechanic",
                 BOSSES,
                 prompts = mechanic,
-                description = "Blast or slam with a quadrant (blast ne), or tiles, memory, trail, detonate, final.",
+                description =
+                    "Blast or slam with a quadrant (blast ne), or tiles, memory, trail, " +
+                        "detonate, final.",
             )
             command(
                 "dbrow.command_stick_het",
@@ -415,7 +452,9 @@ object CommandStickTable {
                 "ToA: Kephri mechanic",
                 BOSSES,
                 prompts = mechanic,
-                description = "Break, shield, final, dung, eggs, bomb, swarm, agile, spitting, soldier or arcane.",
+                description =
+                    "Break, shield, final, dung, eggs, bomb, swarm, " +
+                        "agile, spitting, soldier or arcane.",
             )
             command(
                 "dbrow.command_stick_scabaras",
@@ -431,7 +470,8 @@ object CommandStickTable {
                 "ToA: Wardens mechanic",
                 BOSSES,
                 prompts = mechanic,
-                description = "Divine, entomb, special, hp <percent>, p3 or siphon, in the Wardens' rooms.",
+                description =
+                    "Divine, entomb, special, hp <percent>, p3 or siphon, in the Wardens' rooms.",
             )
             command(
                 "dbrow.command_stick_doomsim",
@@ -440,8 +480,18 @@ object CommandStickTable {
                 BOSSES,
                 prompts = listOf(NUMBER to "How many delves?"),
             )
-            command("dbrow.command_stick_gemstonecrab", "gemstonecrab", "Gemstone crab: force burrow", BOSSES)
-            command("dbrow.command_stick_gauntletkit", "gauntletkit", "Gauntlet: enter with tier 3 kit", BOSSES)
+            command(
+                "dbrow.command_stick_gemstonecrab",
+                "gemstonecrab",
+                "Gemstone crab: force burrow",
+                BOSSES,
+            )
+            command(
+                "dbrow.command_stick_gauntletkit",
+                "gauntletkit",
+                "Gauntlet: enter with tier 3 kit",
+                BOSSES,
+            )
             command(
                 "dbrow.command_stick_gauntletkithm",
                 "gauntletkithm",
@@ -450,11 +500,34 @@ object CommandStickTable {
             )
 
             command("dbrow.command_stick_star", "star", "Spawn a shooting star", WORLD)
-            command("dbrow.command_stick_randomevent", "randomevent", "Spawn the Genie random event", WORLD)
-            command("dbrow.command_stick_bots_count", "bots", "Bots: show status", WORLD, fixedArgs = "count")
+            command(
+                "dbrow.command_stick_randomevent",
+                "randomevent",
+                "Spawn the Genie random event",
+                WORLD,
+            )
+            command(
+                "dbrow.command_stick_bots_count",
+                "bots",
+                "Bots: show status",
+                WORLD,
+                fixedArgs = "count",
+            )
             command("dbrow.command_stick_bots_on", "bots", "Bots: turn on", WORLD, fixedArgs = "on")
-            command("dbrow.command_stick_bots_off", "bots", "Bots: turn off", WORLD, fixedArgs = "off")
-            command("dbrow.command_stick_bots_reset", "bots", "Bots: remove all", WORLD, fixedArgs = "reset")
+            command(
+                "dbrow.command_stick_bots_off",
+                "bots",
+                "Bots: turn off",
+                WORLD,
+                fixedArgs = "off",
+            )
+            command(
+                "dbrow.command_stick_bots_reset",
+                "bots",
+                "Bots: remove all",
+                WORLD,
+                fixedArgs = "reset",
+            )
             command(
                 "dbrow.command_stick_bots_here",
                 "bots",
@@ -477,7 +550,13 @@ object CommandStickTable {
                 confirm = true,
             )
             command("dbrow.command_stick_plugins", "plugins", "Manage plugins", SERVER)
-            command("dbrow.command_stick_loadplugin", "loadplugin", "Load a plugin", SERVER, prompts = pluginName)
+            command(
+                "dbrow.command_stick_loadplugin",
+                "loadplugin",
+                "Load a plugin",
+                SERVER,
+                prompts = pluginName,
+            )
             command(
                 "dbrow.command_stick_pluginenable",
                 "pluginenable",
@@ -499,6 +578,11 @@ object CommandStickTable {
                 SERVER,
                 prompts = pluginName,
             )
-            command("dbrow.command_stick_discordlink", "discordlink", "Link your Discord account", SERVER)
+            command(
+                "dbrow.command_stick_discordlink",
+                "discordlink",
+                "Link your Discord account",
+                SERVER,
+            )
         }
 }

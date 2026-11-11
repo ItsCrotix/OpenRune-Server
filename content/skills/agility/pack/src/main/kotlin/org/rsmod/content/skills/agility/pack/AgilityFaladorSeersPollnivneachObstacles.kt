@@ -321,7 +321,7 @@ internal fun DBTableBuilder.pollnivneachObstacles() {
         fails(
             60,
             300,
-            FallDamage(min = 2, max = 2, hpDivisor = 17),
+            FallDamage(min = 2, max = 2, hpShare = 1 to 17),
             lane(tile(3349, 2968, 1)) { fall(tile(3349, 2970, 0)) },
         )
     }

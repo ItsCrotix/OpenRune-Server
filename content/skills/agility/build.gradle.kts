@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(projects.api.pluginCommons)
+    implementation(projects.content.quest)
     integrationImplementation(projects.api.generated)
     integrationImplementation(projects.api.hitPlugin)
     integrationImplementation(projects.api.objPlugin)

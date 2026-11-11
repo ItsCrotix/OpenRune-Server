@@ -79,7 +79,8 @@ internal val DRAYNOR_LAP =
         "loc.rooftops_draynor_crate",
     )
 
-internal val PLACEMENTS = GNOME_DRAYNOR_PLACEMENTS + ROOFTOP_PLACEMENTS
+internal val PLACEMENTS =
+    GNOME_DRAYNOR_PLACEMENTS + ROOFTOP_PLACEMENTS + NORMAL_COURSE_PLACEMENTS
 
 internal val GNOME_START = CoordGrid(2474, 3436, 0)
 internal val DRAYNOR_START = CoordGrid(3104, 3279, 0)
@@ -128,29 +129,32 @@ internal fun GameTestScope.locNear(loc: String, near: CoordGrid): BoundLocInfo {
 }
 
 /**
- * Clicks the [loc] nearest the player and advances until its xp lands and the obstacle lets go of
- * the player; returns every game message sent meanwhile.
+ * Clicks the [loc] nearest the player and advances until the obstacle has run and let go of the
+ * player; returns every game message sent meanwhile.
  */
-internal fun GameTestScope.cross(loc: String, timeoutTicks: Int = 40): List<String> {
+internal fun GameTestScope.cross(loc: String, timeoutTicks: Int = 40): List<String> =
+    crossNear(loc, player.coords, timeoutTicks)
+
+/** [cross] for the spawn of [loc] nearest [near], where several spawns share the loc. */
+internal fun GameTestScope.crossNear(
+    loc: String,
+    near: CoordGrid,
+    timeoutTicks: Int = 40,
+): List<String> {
     val start = player.coords
-    val before = agilityXp()
-    player.opLoc1(locNear(loc, start))
+    player.opLoc1(locNear(loc, near))
     val messages = mutableListOf<String>()
+    var started = false
     repeat(timeoutTicks) {
         advance()
         messages += gameMessages()
-        if (agilityXp() > before) {
-            repeat(timeoutTicks) {
-                if (player.vars[BUSY] == 0) {
-                    return messages
-                }
-                advance()
-                messages += gameMessages()
-            }
+        if (player.vars[BUSY] != 0) {
+            started = true
+        } else if (started) {
             return messages
         }
     }
-    error("No xp for $loc after $timeoutTicks ticks from $start (at ${player.coords}): $messages")
+    error("$loc did not run in $timeoutTicks ticks from $start (at ${player.coords}): $messages")
 }
 
 internal fun GameTestScope.crossAll(locs: List<String>): List<String> = locs.flatMap { cross(it) }

@@ -14,6 +14,9 @@ import org.rsmod.map.CoordGrid
  * Mark of grace rules are the wiki's (https://oldschool.runescape.wiki/w/Mark_of_Grace): the
  * chance per lap, whether it drops 80% at 20 levels over the course, the diary rerolls of a missed
  * roll and the diary chance (one in n) of a two-minute timer instead of three.
+ *
+ * A course can also need a quest (completed, or only started), refuse boosted levels and pay part
+ * of its lap bonus in another stat.
  */
 object AgilityCoursesTable {
     const val LEVEL = 0
@@ -26,6 +29,10 @@ object AgilityCoursesTable {
     const val MARK_LEVEL_PENALTY = 7
     const val MARK_REROLLS = 8
     const val MARK_SHORT_TIMER = 9
+    const val QUEST = 10
+    const val QUEST_STARTED = 11
+    const val LEVEL_UNBOOSTABLE = 12
+    const val LAP_STAT_XP = 13
 
     fun courses() =
         dbTable("dbtable.agility_courses", serverOnly = true) {
@@ -39,6 +46,10 @@ object AgilityCoursesTable {
             column("mark_level_penalty", MARK_LEVEL_PENALTY, VarType.BOOLEAN)
             column("mark_rerolls", MARK_REROLLS, VarType.INT, VarType.INT)
             column("mark_short_timer", MARK_SHORT_TIMER, VarType.INT, VarType.INT)
+            column("quest", QUEST, VarType.DBROW)
+            column("quest_started", QUEST_STARTED, VarType.BOOLEAN)
+            column("level_unboostable", LEVEL_UNBOOSTABLE, VarType.BOOLEAN)
+            column("lap_stat_xp", LAP_STAT_XP, VarType.INT, VarType.INT)
 
             // UNVERIFIED: mark tiles. No capture shows a mark spawning; the Gnome tile follows the
             // wiki's "before climbing down the tree branch", the rooftop ones are tiles on the
@@ -206,6 +217,99 @@ object AgilityCoursesTable {
                 markShortTimer = "varbit.ardougne_diary_elite_complete" to 2,
                 markTiles = listOf(tile(2658, 3298, 2)),
             )
+
+            // UNVERIFIED: lap count names (only Wilderness and Prifddinas are captured), the mark
+            // tiles (the wiki only describes where they fall) and the non-rooftop mark chance,
+            // which the wiki gives as marks an hour, not a chance per lap.
+            course(
+                "dbrow.agility_course_barbarian",
+                level = 35,
+                name = "Barbarian Outpost",
+                helperCourse = 9,
+                lapCount = "varp.agility_laps_barbarian",
+                lapBonusXp = 463,
+                lapStatXp = "stat.strength" to 413,
+                quest = "dbrow.miniquest_barcrawl",
+                markTiles = listOf(tile(2532, 3546, 1)),
+            )
+            course(
+                "dbrow.agility_course_wilderness",
+                level = 52,
+                name = "Wilderness Agility",
+                helperCourse = 13,
+                lapCount = "varp.agility_laps_wilderness",
+                lapBonusXp = 4989,
+            )
+            course(
+                "dbrow.agility_course_prifddinas",
+                level = 75,
+                name = "Prifddinas Agility Course",
+                helperCourse = 18,
+                lapCount = "varp.agility_laps_prifddinas",
+                quest = "dbrow.quest_songoftheelves",
+            )
+            course(
+                "dbrow.agility_course_ape_atoll",
+                level = 48,
+                name = "Ape Atoll",
+                helperCourse = 11,
+                lapCount = "varp.agility_laps_ape_atoll",
+                lapBonusXp = 3000,
+                levelUnboostable = true,
+                quest = "dbrow.quest_monkeymadness1",
+                questStarted = true,
+                markTiles = listOf(tile(2743, 2738, 0)),
+            )
+            course(
+                "dbrow.agility_course_werewolf",
+                level = 60,
+                name = "Werewolf Agility",
+                helperCourse = 14,
+                lapCount = "varp.agility_laps_werewolf",
+                quest = "dbrow.quest_creatureoffenkenstrain",
+                markTiles = listOf(tile(3540, 9888, 0)),
+            )
+            course(
+                "dbrow.agility_course_shayzien_basic",
+                level = 1,
+                name = "Shayzien Basic Agility Course",
+                helperCourse = 21,
+                lapCount = "varp.agility_laps_shayzien_basic",
+                markTiles = listOf(tile(1530, 3632, 2)),
+            )
+            course(
+                "dbrow.agility_course_shayzien_advanced",
+                level = 45,
+                name = "Shayzien Advanced Agility Course",
+                helperCourse = 21,
+                lapCount = "varp.agility_laps_shayzien_advanced",
+                markTiles = listOf(tile(1530, 3632, 2)),
+            )
+            course(
+                "dbrow.agility_course_wyrm_basic",
+                level = 50,
+                name = "Colossal Wyrm Basic Agility Course",
+                helperCourse = 22,
+                lapCount = "varp.agility_laps_wyrm_basic",
+                quest = "dbrow.quest_childrenofthesun",
+            )
+            course(
+                "dbrow.agility_course_wyrm_advanced",
+                level = 62,
+                name = "Colossal Wyrm Advanced Agility Course",
+                helperCourse = 22,
+                lapCount = "varp.agility_laps_wyrm_advanced",
+                quest = "dbrow.quest_childrenofthesun",
+            )
+            course(
+                "dbrow.agility_course_penguin",
+                level = 30,
+                name = "Penguin Agility",
+                helperCourse = 8,
+                lapCount = "varp.agility_laps_penguin",
+                quest = "dbrow.quest_coldwar",
+                questStarted = true,
+            )
         }
 
     private fun DBTableBuilder.course(
@@ -214,8 +318,12 @@ object AgilityCoursesTable {
         name: String,
         helperCourse: Int,
         lapCount: String,
-        markTiles: List<CoordGrid>,
+        markTiles: List<CoordGrid> = emptyList(),
         lapBonusXp: Int = 0,
+        lapStatXp: Pair<String, Int>? = null,
+        quest: String? = null,
+        questStarted: Boolean = false,
+        levelUnboostable: Boolean = false,
         markChance: Pair<Int, Int> = 2 to 6,
         markLevelPenalty: Boolean = true,
         markRerolls: List<Pair<String, Int>> = emptyList(),
@@ -224,7 +332,19 @@ object AgilityCoursesTable {
         row(row) {
             column(LEVEL, level)
             column(LAP_BONUS_XP, lapBonusXp)
-            column(MARK_TILES, markTiles.map { it.packed })
+            if (markTiles.isNotEmpty()) {
+                column(MARK_TILES, markTiles.map { it.packed })
+            }
+            if (lapStatXp != null) {
+                column(LAP_STAT_XP, lapStatXp.first.asRSCM(), lapStatXp.second)
+            }
+            if (quest != null) {
+                columnRSCM(QUEST, quest)
+                column(QUEST_STARTED, questStarted)
+            }
+            if (levelUnboostable) {
+                column(LEVEL_UNBOOSTABLE, true)
+            }
             column(NAME, name)
             columnRSCM(LAP_COUNT, lapCount)
             column(HELPER_COURSE, helperCourse)

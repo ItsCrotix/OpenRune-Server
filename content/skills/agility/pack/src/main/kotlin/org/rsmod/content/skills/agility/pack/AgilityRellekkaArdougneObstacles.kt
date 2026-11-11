@@ -43,7 +43,7 @@ internal fun DBTableBuilder.rellekkaObstacles() {
         fails(
             0,
             300,
-            FallDamage(min = 0, max = 0, hpDivisor = 10),
+            FallDamage(min = 0, max = 0, hpShare = 1 to 10),
             lane(tile(2622, 3658, 3)) { fall(tile(2624, 3656, 0)) },
         )
     }

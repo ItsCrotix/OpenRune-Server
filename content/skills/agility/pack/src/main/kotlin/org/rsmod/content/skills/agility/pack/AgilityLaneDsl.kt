@@ -22,9 +22,13 @@ import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.COURSE
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.DIARY_XP
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.FAIL_ACTIONS
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.FAIL_DAMAGE
+import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.LAND_SPAWN_OBJ
+import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.LAND_SPAWN_TILES
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.LANES
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.LOCS
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.MESSAGES
+import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.REQUIREMENT
+import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.REQUIREMENT_OBJS
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.STEP
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.SUCCESS
 import org.rsmod.content.skills.agility.pack.AgilityObstaclesTable.XP
@@ -56,6 +60,7 @@ internal const val JUMP_DOWN_SYNTH = "synth.jump2"
 internal const val HURDLE_SYNTH = "synth.hurdle"
 internal const val HANDHOLDS_SYNTH = "synth.handholds_loop"
 internal const val FALL_LAND_SYNTH = "synth.fall_land"
+internal const val STUMBLE_SYNTH = "synth.stumble_loop"
 
 internal const val OP_TICK = -1
 
@@ -81,8 +86,8 @@ internal class Lane(
     val messages: List<LaneMessage>,
 )
 
-/** Fall damage: a roll in [min]..[max], plus the current hitpoints over [hpDivisor] when set. */
-internal class FallDamage(val min: Int, val max: Int, val hpDivisor: Int = 0)
+/** Fall damage: a roll in [min]..[max], plus a [hpShare] fraction of the current hitpoints. */
+internal class FallDamage(val min: Int, val max: Int, val hpShare: Pair<Int, Int> = 0 to 1)
 
 internal class LaneBuilder(start: CoordGrid) {
     val actions = mutableListOf<LaneAction>()
@@ -235,7 +240,19 @@ internal class LaneBuilder(start: CoordGrid) {
         land()
     }
 
-    // UNVERIFIED: no capture shows a fall; this stumble, drop and hit is a guess.
+    /** A fall off a rope as captured on Prifddinas: a stumble, then the drop to [tile]. */
+    fun stumble(tile: CoordGrid) {
+        anim(STUMBLE)
+        sound(STUMBLE_SYNTH, loops = 10)
+        next()
+        telejump(tile)
+        balanceOff()
+        resetAnim()
+        sound(FALL_LAND_SYNTH)
+        hit()
+    }
+
+    // UNVERIFIED: no capture shows a fall off a roof; this stumble, drop and hit is a guess.
     fun fall(tile: CoordGrid) {
         anim(STUMBLE)
         next()
@@ -293,7 +310,25 @@ internal fun DBRowBuilder.fails(low: Int, high: Int, damage: FallDamage, vararg 
     }
     column(SUCCESS, low, high)
     column(FAIL_ACTIONS, actionValues(lanes))
-    column(FAIL_DAMAGE, damage.min, damage.max, damage.hpDivisor)
+    column(FAIL_DAMAGE, damage.min, damage.max, damage.hpShare.first, damage.hpShare.second)
+}
+
+/**
+ * The obstacle refuses players who do not meet [requirement], a `REQUIREMENT_*` id, wearing one
+ * of [objs].
+ */
+internal fun DBRowBuilder.requirement(requirement: Int, vararg objs: String) {
+    column(REQUIREMENT, requirement)
+    columnRSCM(REQUIREMENT_OBJS, *objs)
+}
+
+/**
+ * Landing drops a private [obj] for the player on one of [tiles], unless they carry one already:
+ * the stick the Werewolf course's Agility Boss throws.
+ */
+internal fun DBRowBuilder.landSpawn(obj: String, tiles: List<CoordGrid>) {
+    columnRSCM(LAND_SPAWN_OBJ, obj)
+    column(LAND_SPAWN_TILES, tiles.map { it.packed })
 }
 
 /**

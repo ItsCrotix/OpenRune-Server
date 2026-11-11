@@ -236,10 +236,12 @@ class RooftopCoursesTest {
         val LANE_MOVES = setOf(0, 7, 8)
 
         /**
-         * Tiles live puts the player on although the map flags no floor there: the captured
-         * Prifddinas treetop landing and Ardougne's last roof, where the roof npc stands too.
+         * Tiles live puts the player or a mark on although the map flags them blocked: the
+         * captured Prifddinas treetop landing, and from capture 787 the Ardougne steep roof's end
+         * and its mark tile, which players take from beside it.
          */
-        val OFF_FLOOR_TILES = setOf(CoordGrid(2243, 3394, 2), CoordGrid(2657, 3294, 3))
+        val OFF_FLOOR_TILES =
+            setOf(CoordGrid(2243, 3394, 2), CoordGrid(2656, 3297, 3), CoordGrid(2657, 3318, 3))
         const val SEERS_ROW = "dbrow.agility_course_seers"
         const val ARDOUGNE_ROW = "dbrow.agility_course_ardougne"
         const val CANIFIS_ROW = "dbrow.agility_course_canifis"

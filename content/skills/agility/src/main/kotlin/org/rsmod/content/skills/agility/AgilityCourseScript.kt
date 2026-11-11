@@ -19,6 +19,7 @@ import org.rsmod.api.script.onOpLoc1
 import org.rsmod.api.table.agility.AgilityCoursesRow
 import org.rsmod.game.entity.Player
 import org.rsmod.game.entity.util.EntityExactMove
+import org.rsmod.game.entity.util.EntityFaceAngle
 import org.rsmod.game.hit.HitType
 import org.rsmod.map.CoordGrid
 import org.rsmod.plugin.scripts.PluginScript
@@ -167,12 +168,14 @@ class AgilityCourseScript @Inject constructor(private val marks: MarksOfGrace) :
     /**
      * Puts the player on the move's tile and has the client draw them gliding from [from] to [to]
      * (the tile itself unless the lane recorded another), as live draws some obstacles a tile or
-     * two off where the player ends up.
+     * two off where the player ends up. Live sends the move's angle as the face angle on the same
+     * tick; without it the client turns the player the long way round between moves.
      */
     private fun ProtectedAccess.exactMove(move: ObstacleAction, from: CoordGrid, to: CoordGrid?) {
         val dest = move.coord
         val end = to ?: dest
         telejump(dest, TeleportType.Exempt)
+        player.pendingFaceAngle = EntityFaceAngle(move.ref)
         player.pendingExactMove =
             EntityExactMove(
                 deltaX1 = from.x - dest.x,

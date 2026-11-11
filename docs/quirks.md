@@ -147,7 +147,8 @@ to the bank first, then inventory if necessary; Ultimate Ironmen use inventory o
 
 A mark of grace lies for 1000 ticks from the moment it spawns, whether or not its owner stays
 logged in; in OSRS its timer pauses while the owner is logged out. The spawn timer is one Perm
-varp holding the real-time minute of the last spawn, so it survives logout and world changes, and
-it is shared by every course: the wiki does not say whether the timer is per course.
+varp holding the real-time minute from which marks may roll again (three minutes after a spawn,
+two when a course's diary shortens it), so it survives logout and world changes, and it is shared
+by every course: the wiki does not say whether the timer is per course.
 
 [magic-numbers]: https://en.wikipedia.org/wiki/Magic_number_(programming)

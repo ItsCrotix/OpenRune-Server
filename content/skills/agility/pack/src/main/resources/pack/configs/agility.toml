@@ -16,7 +16,7 @@ startBit = 16
 endBit = 23
 
 [[varp]]
-id = "varp.agility_mark_minute"
+id = "varp.agility_mark_ready_minute"
 scope = "Perm"
 transmit = "Never"
 
@@ -27,5 +27,45 @@ transmit = "Never"
 
 [[varp]]
 id = "varp.agility_laps_draynor"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_al_kharid"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_varrock"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_canifis"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_falador"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_seers"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_pollnivneach"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_rellekka"
+scope = "Perm"
+transmit = "Never"
+
+[[varp]]
+id = "varp.agility_laps_ardougne"
 scope = "Perm"
 transmit = "Never"

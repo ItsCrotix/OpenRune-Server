@@ -16,7 +16,7 @@ class DraynorCourseTest {
     @Test
     fun GameTestState.`full lap pays 120 xp and ends beside the crate`() = runAgilityTest {
         startAt(DRAYNOR_START)
-        setMarkMinute(currentMinute())
+        blockMarks()
         val before = agilityXp()
 
         crossAll(DRAYNOR_LAP)
@@ -28,7 +28,7 @@ class DraynorCourseTest {
     @Test
     fun GameTestState.`each obstacle lands on its landing tile`() = runAgilityTest {
         startAt(DRAYNOR_START)
-        setMarkMinute(currentMinute())
+        blockMarks()
         val landings =
             listOf(
                 CoordGrid(3102, 3279, 3),
@@ -52,7 +52,7 @@ class DraynorCourseTest {
     @Test
     fun GameTestState.`each obstacle lands as many ticks after the click as live`() =
         runAgilityTest {
-            setMarkMinute(currentMinute())
+            blockMarks()
             val obstacles =
                 listOf(
                     Triple("loc.rooftops_draynor_wallclimb", CoordGrid(3103, 3279, 0), 2),
@@ -105,7 +105,7 @@ class DraynorCourseTest {
 
     @Test
     fun GameTestState.`finished laps count up`() = runAgilityTest {
-        setMarkMinute(currentMinute())
+        blockMarks()
 
         startAt(DRAYNOR_START)
         val first = crossAll(DRAYNOR_LAP)
@@ -119,7 +119,7 @@ class DraynorCourseTest {
 
     @Test
     fun GameTestState.`helper highlights the course for the lap`() = runAgilityTest {
-        setMarkMinute(currentMinute())
+        blockMarks()
         startAt(DRAYNOR_START)
 
         cross(DRAYNOR_LAP.first())

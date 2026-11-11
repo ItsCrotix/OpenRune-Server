@@ -30,7 +30,7 @@ constructor(
 internal class Placement(val loc: String, val coords: CoordGrid, val angle: Int, val shape: Int)
 
 /** Every obstacle loc spawn, from `gradlew :or-cache:dumpLocs`. */
-internal val PLACEMENTS =
+private val GNOME_DRAYNOR_PLACEMENTS =
     listOf(
         Placement("loc.gnome_log_balance1", CoordGrid(2474, 3435, 0), 0, 22),
         Placement("loc.obstical_net2", CoordGrid(2471, 3425, 0), 0, 10),
@@ -79,11 +79,14 @@ internal val DRAYNOR_LAP =
         "loc.rooftops_draynor_crate",
     )
 
+internal val PLACEMENTS = GNOME_DRAYNOR_PLACEMENTS + ROOFTOP_PLACEMENTS
+
 internal val GNOME_START = CoordGrid(2474, 3436, 0)
 internal val DRAYNOR_START = CoordGrid(3104, 3279, 0)
 
 internal const val MARK = "obj.grace"
-internal const val MARK_MINUTE = "varp.agility_mark_minute"
+internal const val BUSY = "varbit.busy"
+internal const val MARK_READY = "varp.agility_mark_ready_minute"
 
 /** The harness loads the real collision map but not the map locs, so every obstacle is placed. */
 internal fun GameTestState.runAgilityTest(
@@ -119,13 +122,14 @@ internal fun GameTestScope.locNear(loc: String, near: CoordGrid): BoundLocInfo {
                 it.coords.chebyshevDistance(near) + levelPenalty
             }
     val type = checkNotNull(ServerCacheManager.getObject(loc.asRSCM(RSCMType.LOC)))
-    val info = findLocs(placement.coords).first { it.coords == placement.coords && it.id == type.id }
+    val info =
+        findLocs(placement.coords).first { it.coords == placement.coords && it.id == type.id }
     return BoundLocInfo(info, type)
 }
 
 /**
- * Clicks the [loc] nearest the player and advances until its xp lands; returns every game message
- * sent meanwhile.
+ * Clicks the [loc] nearest the player and advances until its xp lands and the obstacle lets go of
+ * the player; returns every game message sent meanwhile.
  */
 internal fun GameTestScope.cross(loc: String, timeoutTicks: Int = 40): List<String> {
     val start = player.coords
@@ -136,10 +140,17 @@ internal fun GameTestScope.cross(loc: String, timeoutTicks: Int = 40): List<Stri
         advance()
         messages += gameMessages()
         if (agilityXp() > before) {
+            repeat(timeoutTicks) {
+                if (player.vars[BUSY] == 0) {
+                    return messages
+                }
+                advance()
+                messages += gameMessages()
+            }
             return messages
         }
     }
-    error("No xp for $loc after $timeoutTicks ticks from $start (at ${player.coords}).")
+    error("No xp for $loc after $timeoutTicks ticks from $start (at ${player.coords}): $messages")
 }
 
 internal fun GameTestScope.crossAll(locs: List<String>): List<String> = locs.flatMap { cross(it) }
@@ -172,11 +183,26 @@ internal fun GameTestScope.agilityXp(): Int = player.statMap.getFineXP("stat.agi
 
 internal fun fineXp(xp: Double): Int = (xp * 10).toInt()
 
-internal fun GameTestScope.setMarkMinute(minute: Int) {
-    VarPlayerIntMapSetter.set(player, MARK_MINUTE, minute)
+/** Sets the real minute from which marks of grace may roll again. */
+internal fun GameTestScope.setMarkReady(minute: Int) {
+    VarPlayerIntMapSetter.set(player, MARK_READY, minute)
 }
 
-internal fun GameTestScope.markMinute(): Int = player.vars[MARK_MINUTE]
+internal fun GameTestScope.blockMarks() {
+    setMarkReady(currentMinute() + 10)
+}
+
+internal fun GameTestScope.markReady(): Int = player.vars[MARK_READY]
+
+/** Sets both the base and the current Agility level. */
+internal fun GameTestScope.setAgility(level: Int) {
+    player.statMap.setBaseLevel("stat.agility", level.toByte())
+    player.statMap.setCurrentLevel("stat.agility", level.toByte())
+}
+
+internal fun GameTestScope.setVarbit(varbit: String, value: Int) {
+    VarPlayerIntMapSetter.set(player, varbit, value)
+}
 
 internal fun currentMinute(): Int = (System.currentTimeMillis() / 60_000L).toInt()
 

@@ -2,13 +2,15 @@ package org.rsmod.content.other.commandstick
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class CommandStickCatalogTest {
     @Test
     fun `rows whose command is not registered are hidden`() {
         val rows = listOf(row("tele", "Teleport", TELEPORT), row("gone", "Gone", TELEPORT))
 
-        val categories = CommandStickCatalog.build(rows, NAMES, mapOf("tele" to "Teleport to coordgrid"))
+        val categories =
+            CommandStickCatalog.build(rows, NAMES, mapOf("tele" to "Teleport to coordgrid"))
 
         assertEquals(listOf("Teleport"), categories.single().entries.map { it.name })
     }
@@ -47,14 +49,19 @@ class CommandStickCatalogTest {
         val categories = CommandStickCatalog.build(rows, NAMES, registered)
 
         assertEquals(listOf("Teleport", "Items and bank"), categories.map { it.name })
-        assertEquals(listOf("Go down a level", "Go up a level"), categories[0].entries.map { it.name })
+        assertEquals(
+            listOf("Go down a level", "Go up a level"),
+            categories[0].entries.map { it.name },
+        )
     }
 
     @Test
     fun `row description wins over the command description`() {
-        val rows = listOf(row("god", "Toggle god mode", ITEMS, description = "Makes you invincible."))
+        val rows =
+            listOf(row("god", "Toggle god mode", ITEMS, description = "Makes you invincible."))
 
-        val entry = CommandStickCatalog.build(rows, NAMES, mapOf("god" to "Toggle")).single().entries.single()
+        val category = CommandStickCatalog.build(rows, NAMES, mapOf("god" to "Toggle")).single()
+        val entry = category.entries.single()
 
         assertEquals("Makes you invincible.", entry.description)
     }
@@ -70,15 +77,43 @@ class CommandStickCatalogTest {
 
     @Test
     fun `a command without args runs with an empty list`() {
-        assertEquals(CommandRun("god", emptyList()), CommandStickCatalog.run(entry(command = "god"), emptyList()))
+        assertEquals(
+            CommandRun("god", emptyList()),
+            CommandStickCatalog.run(entry(command = "god"), emptyList()),
+        )
     }
 
     @Test
     fun `encoders strip the separators from names and descriptions`() {
-        val categories = listOf(CommandCategory("A|B", listOf(entry(name = "x~y", description = "1|2"))))
+        val categories =
+            listOf(CommandCategory("A|B", listOf(entry(name = "x~y", description = "1|2"))))
 
         assertEquals("A/B", CommandStickCatalog.encodeNames(categories))
         assertEquals("x-y~1/2", CommandStickCatalog.encodeEntries(categories.single().entries))
+    }
+
+    @Test
+    fun `rows with an unknown category land in other before unlisted commands`() {
+        val rows = listOf(row("god", "Toggle god mode", OTHER), row("tele", "Teleport", 42))
+        val registered = mapOf("god" to null, "tele" to null, "zzz" to null)
+
+        val other = CommandStickCatalog.build(rows, NAMES, registered).single()
+
+        assertEquals(listOf("Toggle god mode", "Teleport", "::zzz"), other.entries.map { it.name })
+    }
+
+    @Test
+    fun `an unknown prompt type id fails naming the id`() {
+        val error = assertThrows<IllegalStateException> { PromptType.of(7) }
+
+        assertEquals("Unknown command stick prompt type: 7", error.message)
+    }
+
+    @Test
+    fun `padded and blank answers never become empty args`() {
+        val run = CommandStickCatalog.run(entry(command = "up"), listOf("  5 ", ""))
+
+        assertEquals(CommandRun("up", listOf("5")), run)
     }
 
     private fun row(
@@ -99,6 +134,7 @@ class CommandStickCatalogTest {
     private companion object {
         const val TELEPORT = 0
         const val ITEMS = 1
+        const val OTHER = 9
         val NAMES = mapOf(0 to "Teleport", 1 to "Items and bank", 9 to "Other")
     }
 }

@@ -6,7 +6,8 @@ enum class PromptType(val id: Int) {
     Item(2);
 
     companion object {
-        fun of(id: Int): PromptType = entries.first { it.id == id }
+        fun of(id: Int): PromptType =
+            entries.firstOrNull { it.id == id } ?: error("Unknown command stick prompt type: $id")
     }
 }
 
@@ -51,12 +52,16 @@ object CommandStickCatalog {
         val entries =
             rows
                 .filter { it.command in registered }
-                .groupBy({ it.category }) { it.toEntry(registered[it.command]) }
+                .groupBy({ if (it.category in categoryNames) it.category else OTHER_CATEGORY }) {
+                    it.toEntry(registered[it.command])
+                }
         val other =
             registered.keys
                 .filter { it !in listed }
                 .sorted()
-                .map { CommandEntry(it, "::$it", registered[it].orEmpty(), "", emptyList(), false) }
+                .map {
+                    CommandEntry(it, "::$it", registered[it].orEmpty(), "", emptyList(), false)
+                }
         return categoryNames.keys.sorted().mapNotNull { key ->
             val list = entries[key].orEmpty() + if (key == OTHER_CATEGORY) other else emptyList()
             if (list.isEmpty()) null else CommandCategory(categoryNames.getValue(key), list)
@@ -64,9 +69,13 @@ object CommandStickCatalog {
     }
 
     fun run(entry: CommandEntry, answers: List<String>): CommandRun {
-        val line =
-            (listOf(entry.fixedArgs) + answers).filter { it.isNotBlank() }.joinToString(" ").lowercase()
-        return CommandRun(entry.command, if (line.isEmpty()) emptyList() else line.split(" "))
+        val args =
+            (listOf(entry.fixedArgs) + answers)
+                .joinToString(" ")
+                .lowercase()
+                .split(" ")
+                .filter { it.isNotEmpty() }
+        return CommandRun(entry.command, args)
     }
 
     fun encodeNames(categories: List<CommandCategory>): String =

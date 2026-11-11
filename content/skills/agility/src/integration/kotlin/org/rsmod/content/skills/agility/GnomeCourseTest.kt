@@ -6,8 +6,8 @@ import org.rsmod.api.testing.GameTestState
 import org.rsmod.map.CoordGrid
 
 /**
- * Gnome Stronghold Agility Course: 10 + 10 + 6.5 + 10 + 6.5 + 10 + 10 xp and a 50 xp lap bonus,
- * 113 a lap (https://oldschool.runescape.wiki/w/Gnome_Stronghold_Agility_Course).
+ * Gnome Stronghold Agility Course: 10 + 10 + 6.5 + 10 + 6.5 + 10 + 7.5 xp and a 50 xp lap bonus,
+ * 110.5 a lap (https://oldschool.runescape.wiki/w/Gnome_Stronghold_Agility_Course).
  */
 class GnomeCourseTest {
     @Test
@@ -39,7 +39,7 @@ class GnomeCourseTest {
         val messages = crossAll(GNOME_LAP)
 
         assertEquals(CoordGrid(2484, 3437, 0), player.coords)
-        assertEquals(before + fineXp(63.0) + fineXp(50.0), agilityXp())
+        assertEquals(before + fineXp(60.5) + fineXp(50.0), agilityXp())
         assertEquals(
             listOf(
                 "You walk carefully across the slippery log...",
@@ -51,7 +51,7 @@ class GnomeCourseTest {
                 "You climb down the tree...",
                 "You land on the ground.",
                 "You climb the netting...",
-                "You pull yourself through the pipes.",
+                "Your Gnome Stronghold Agility lap count is: <col=ff0000>1</col>.",
             ),
             messages,
         )
@@ -68,7 +68,7 @@ class GnomeCourseTest {
         cross("loc.obstical_pipe3_2")
 
         assertEquals(CoordGrid(2487, 3437, 0), player.coords)
-        assertEquals(before + fineXp(63.0) + fineXp(50.0), agilityXp())
+        assertEquals(before + fineXp(60.5) + fineXp(50.0), agilityXp())
     }
 
     @Test
@@ -92,7 +92,7 @@ class GnomeCourseTest {
         cross("loc.obstical_net3")
         cross("loc.obstical_pipe3_2")
 
-        assertEquals(before + fineXp(30.0), agilityXp())
+        assertEquals(before + fineXp(27.5), agilityXp())
     }
 
     @Test
@@ -104,7 +104,7 @@ class GnomeCourseTest {
         startAt(GNOME_START)
         crossAll(GNOME_LAP)
 
-        assertEquals(before + 2 * (fineXp(63.0) + fineXp(50.0)), agilityXp())
+        assertEquals(before + 2 * (fineXp(60.5) + fineXp(50.0)), agilityXp())
     }
 
     @Test

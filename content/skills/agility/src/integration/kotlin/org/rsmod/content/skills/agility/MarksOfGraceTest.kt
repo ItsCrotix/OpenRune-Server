@@ -12,12 +12,12 @@ import org.rsmod.routefinder.flag.CollisionFlag
 
 /**
  * Marks of grace (https://oldschool.runescape.wiki/w/Mark_of_Grace): a 2/6 roll per finished lap
- * once three minutes have started since the last mark, 80% lower at 20 levels over the course, the
+ * once three minutes have passed since the last mark, 80% lower at 20 levels over the course, the
  * mark private to its player for ten minutes.
  */
 class MarksOfGraceTest {
     /**
-     * Runs a Draynor lap, queueing [roll] (out of 15) and [tile] as the spawn index; a `null` roll
+     * Runs a Draynor lap, queueing [roll] (out of 30) and [tile] as the spawn index; a `null` roll
      * queues nothing, for laps that must not roll at all.
      */
     private fun GameTestScope.runDraynorLap(roll: Int?, tile: Int = 0) {
@@ -43,46 +43,48 @@ class MarksOfGraceTest {
         assertEquals(1, mark.count)
         assertTrue(mark.isVisibleTo(player))
         assertFalse(mark.isVisibleTo(other))
-        assertTrue(markMinute() in before..currentMinute())
+        assertTrue(markReady() in before + 3..currentMinute() + 3)
     }
 
     @Test
     fun GameTestState.`every mark tile is open floor`() = runAgilityTest { deps ->
         for (tile in GNOME_MARK_TILES + DRAYNOR_MARK_TILES) {
             val flags = deps.collision[tile.x, tile.z, tile.level]
-            val blocked = CollisionFlag.BLOCK_WALK or CollisionFlag.LOC or CollisionFlag.GROUND_DECOR
+            val blocked =
+                CollisionFlag.BLOCK_WALK or CollisionFlag.LOC or CollisionFlag.GROUND_DECOR
             assertTrue(flags and blocked == 0, "$tile is blocked: flags=$flags")
         }
     }
 
     @Test
     fun GameTestState.`missed roll spawns nothing`() = runAgilityTest { deps ->
-        runDraynorLap(roll = 5)
+        runDraynorLap(roll = 10)
 
         assertEquals(emptyList<Any>(), marksOn(deps, DRAYNOR_MARK_TILES))
-        assertEquals(0, markMinute())
+        assertEquals(0, markReady())
     }
 
     @Test
-    fun GameTestState.`no roll until three minutes have started`() = runAgilityTest { deps ->
-        setMarkMinute(currentMinute() - 2)
+    fun GameTestState.`no roll until the timer runs out`() = runAgilityTest { deps ->
+        setMarkReady(currentMinute() + 1)
         runDraynorLap(roll = null)
         assertEquals(emptyList<Any>(), marksOn(deps, DRAYNOR_MARK_TILES))
 
-        setMarkMinute(currentMinute() - 3)
+        setMarkReady(currentMinute())
         runDraynorLap(roll = 0, tile = 2)
-        assertEquals(listOf(DRAYNOR_MARK_TILES[2]), marksOn(deps, DRAYNOR_MARK_TILES).map { it.coords })
+        val tiles = marksOn(deps, DRAYNOR_MARK_TILES).map { it.coords }
+        assertEquals(listOf(DRAYNOR_MARK_TILES[2]), tiles)
     }
 
     @Test
     fun GameTestState.`chance drops twenty levels over the course`() = runAgilityTest { deps ->
-        player.statMap.setBaseLevel("stat.agility", 21)
-        random.next = 1
+        setAgility(21)
+        random.next = 2
         startAt(DRAYNOR_START)
         crossAll(DRAYNOR_LAP)
         assertEquals(emptyList<Any>(), marksOn(deps, DRAYNOR_MARK_TILES))
 
-        runDraynorLap(roll = 0)
+        runDraynorLap(roll = 1)
         assertEquals(1, marksOn(deps, DRAYNOR_MARK_TILES).size)
     }
 
@@ -98,7 +100,7 @@ class MarksOfGraceTest {
     @Test
     fun GameTestState.`marks on one tile stack`() = runAgilityTest { deps ->
         runDraynorLap(roll = 0, tile = 0)
-        setMarkMinute(0)
+        setMarkReady(0)
         runDraynorLap(roll = 0, tile = 0)
 
         val mark = marksOn(deps, DRAYNOR_MARK_TILES).single()

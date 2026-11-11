@@ -1,30 +1,25 @@
 package org.rsmod.content.skills.agility
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class MarksOfGraceChanceTest {
+    private fun odds(numerator: Int, denominator: Int, penalty: Boolean): Double =
+        MarksOfGrace.chance(numerator, penalty).toDouble() /
+            (denominator * MarksOfGrace.PENALTY_FACTOR)
+
     @Test
-    fun `timer opens on the third minute after a spawn`() {
-        assertFalse(MarksOfGrace.isTimerExpired(lastMinute = 100, nowMinute = 100))
-        assertFalse(MarksOfGrace.isTimerExpired(lastMinute = 100, nowMinute = 102))
-        assertTrue(MarksOfGrace.isTimerExpired(lastMinute = 100, nowMinute = 103))
-        assertTrue(MarksOfGrace.isTimerExpired(lastMinute = 0, nowMinute = 100))
+    fun `course chance is the wiki's per lap`() {
+        assertEquals(2.0 / 6, odds(2, 6, penalty = false), 1e-9)
+        assertEquals(2.0 / 5, odds(2, 5, penalty = false), 1e-9)
+        assertEquals(2.0 / 3, odds(2, 3, penalty = false), 1e-9)
     }
 
     @Test
-    fun `base chance is two in six`() {
-        val chance = MarksOfGrace.chance(baseLevel = 20, courseLevel = 1)
-        assertEquals(2.0 / 6, chance.toDouble() / MarksOfGrace.CHANCE_DENOMINATOR, 1e-9)
-    }
-
-    @Test
-    fun `chance is eighty percent lower twenty levels over the course`() {
-        val base = MarksOfGrace.chance(baseLevel = 1, courseLevel = 1)
-        val reduced = MarksOfGrace.chance(baseLevel = 21, courseLevel = 1)
-        assertEquals(base * 0.2, reduced.toDouble(), 1e-9)
-        assertEquals(base, MarksOfGrace.chance(baseLevel = 20, courseLevel = 1))
+    fun `level penalty makes the chance eighty percent lower`() {
+        for ((numerator, denominator) in listOf(2 to 6, 2 to 5, 2 to 3)) {
+            val base = odds(numerator, denominator, penalty = false)
+            assertEquals(base * 0.2, odds(numerator, denominator, penalty = true), 1e-9)
+        }
     }
 }

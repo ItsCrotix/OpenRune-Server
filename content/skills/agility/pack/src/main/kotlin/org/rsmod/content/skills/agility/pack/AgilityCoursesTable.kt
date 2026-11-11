@@ -51,9 +51,10 @@ object AgilityCoursesTable {
             column("level_unboostable", LEVEL_UNBOOSTABLE, VarType.BOOLEAN)
             column("lap_stat_xp", LAP_STAT_XP, VarType.INT, VarType.INT)
 
-            // UNVERIFIED: mark tiles. No capture shows a mark spawning; the Gnome tile follows the
-            // wiki's "before climbing down the tree branch", the rooftop ones are tiles on the
-            // roofs the wiki names, from another implementation.
+            // Rellekka's and Ardougne's mark tiles are where the rsprox.net captures show marks
+            // spawning. UNVERIFIED: the rest; the Gnome tile follows the wiki's "before climbing
+            // down the tree branch", the other rooftop ones are tiles on the roofs the wiki names,
+            // from another implementation.
             course(
                 "dbrow.agility_course_gnome_stronghold",
                 level = 1,
@@ -198,12 +199,10 @@ object AgilityCoursesTable {
                 markShortTimer = "varbit.fremennik_diary_hard_complete" to 3,
                 markTiles =
                     listOf(
-                        tile(2623, 3674, 3),
-                        tile(2620, 3663, 3),
+                        tile(2623, 3675, 3),
                         tile(2628, 3652, 3),
-                        tile(2640, 3651, 3),
-                        tile(2646, 3659, 3),
-                        tile(2656, 3672, 3),
+                        tile(2629, 3653, 3),
+                        tile(2642, 3651, 3),
                     ),
             )
             course(
@@ -215,7 +214,7 @@ object AgilityCoursesTable {
                 markChance = 2 to 3,
                 markRerolls = listOf("varbit.ardougne_diary_elite_complete" to 25),
                 markShortTimer = "varbit.ardougne_diary_elite_complete" to 2,
-                markTiles = listOf(tile(2657, 3294, 3)),
+                markTiles = listOf(tile(2657, 3318, 3)),
             )
 
             // UNVERIFIED: lap count names (only Wilderness and Prifddinas are captured), the mark

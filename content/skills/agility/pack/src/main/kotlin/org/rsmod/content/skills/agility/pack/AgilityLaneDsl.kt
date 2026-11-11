@@ -129,6 +129,11 @@ internal class LaneBuilder(start: CoordGrid) {
         actions += LaneAction(tick, ACTION_FACE, coord)
     }
 
+    /** Turns the player to [angle] on this tick, even one they move on, as live sends it. */
+    fun faceAngle(angle: Int) {
+        actions += LaneAction(tick, ACTION_FACE_ANGLE, ref = angle)
+    }
+
     fun anim(seq: String, delay: Int = 0) {
         actions += LaneAction(tick, ACTION_ANIM, ref = seq.asRSCM(), arg1 = delay)
     }

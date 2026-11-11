@@ -1,6 +1,6 @@
 package org.rsmod.content.other.commandstick
 
-import dev.openrune.types.enums.enum
+import org.rsmod.api.enums.NamedEnums
 import org.rsmod.api.table.CommandStickCommandsRow
 
 internal object CommandStickRows {
@@ -19,7 +19,7 @@ internal object CommandStickRows {
         }
 
     fun categoryNames(): Map<Int, String> =
-        enum<Int, String>("command_stick_categories")
+        NamedEnums.command_stick_categories
             .backing
             .mapNotNull { (key, name) -> name?.let { key to it } }
             .toMap()

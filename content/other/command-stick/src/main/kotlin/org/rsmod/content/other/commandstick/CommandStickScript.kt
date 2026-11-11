@@ -1,7 +1,6 @@
 package org.rsmod.content.other.commandstick
 
 import dev.openrune.definition.type.widget.IfEvent
-import dev.openrune.rscm.RSCM
 import dev.openrune.rscm.RSCM.asRSCM
 import dev.openrune.rscm.RSCMType
 import dev.openrune.types.ItemServerType
@@ -75,6 +74,7 @@ constructor(
     private fun ProtectedAccess.showCategory(categories: List<CommandCategory>) {
         val last = categories.lastIndex.coerceAtLeast(0)
         val selected = player.commandStickCategory.coerceAtMost(last)
+        player.commandStickCategory = selected
         runClientScript(
             CATEGORIES_SCRIPT.asRSCM(RSCMType.CLIENTSCRIPT),
             CATEGORIES.asRSCM(RSCMType.COMPONENT),
@@ -103,7 +103,8 @@ constructor(
             return
         }
         ifClose()
-        if (entry.confirm && !choice2("Yes", true, "No", false, title = "${entry.name}?")) {
+        val title = "Are you sure you want to: ${entry.name}?"
+        if (entry.confirm && !choice2("Yes", true, "No", false, title = title)) {
             return
         }
         val answers = mutableListOf<String>()
@@ -145,10 +146,7 @@ constructor(
     private fun Player.isAdmin(): Boolean = modLevel.isAtLeast(Rights.ADMINISTRATOR)
 
     private fun ItemServerType.gamevalName(): String =
-        runCatching { RSCM.getReverseMapping(RSCMType.OBJ, id) }
-            .getOrNull()
-            ?.removePrefix("obj.")
-            ?: id.toString()
+        runCatching { internalName }.getOrNull()?.removePrefix("obj.") ?: id.toString()
 
     private companion object {
         const val STICK = "obj.command_stick"

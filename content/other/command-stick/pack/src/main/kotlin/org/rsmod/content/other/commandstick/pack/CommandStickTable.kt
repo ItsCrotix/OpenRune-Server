@@ -247,7 +247,13 @@ object CommandStickTable {
                 fixedArgs = "pvp",
                 confirm = true,
             )
-            command("dbrow.command_stick_poison", "poison", "Poison yourself", PLAYER)
+            command(
+                "dbrow.command_stick_poison",
+                "poison",
+                "Poison yourself",
+                PLAYER,
+                prompts = listOf(NUMBER to "Initial damage"),
+            )
             command("dbrow.command_stick_venom", "venom", "Envenom yourself", PLAYER)
             command("dbrow.command_stick_venomclear", "venomclear", "Cure venom", PLAYER)
             command("dbrow.command_stick_disease", "disease", "Give yourself disease", PLAYER)
@@ -258,7 +264,7 @@ object CommandStickTable {
                 "npcadd",
                 "Spawn NPC",
                 SPAWNING,
-                prompts = listOf(NUMBER to "Duration (ticks)", TEXT to "NPC name"),
+                prompts = listOf(NUMBER to "Duration (ticks)", TEXT to "NPC debug name (e.g. man)"),
                 aliases = "npc",
             )
             command(
@@ -266,14 +272,18 @@ object CommandStickTable {
                 "npcgrid",
                 "Spawn NPC grid",
                 SPAWNING,
-                prompts = listOf(TEXT to "NPC name"),
+                prompts = listOf(TEXT to "NPC debug name (e.g. man)"),
             )
             command(
                 "dbrow.command_stick_locadd",
                 "locadd",
                 "Spawn object",
                 SPAWNING,
-                prompts = listOf(NUMBER to "Duration (ticks)", TEXT to "Object name"),
+                prompts =
+                    listOf(
+                        NUMBER to "Duration (ticks)",
+                        TEXT to "Object debug name (e.g. bookcase)",
+                    ),
                 aliases = "object",
             )
             command(
@@ -290,14 +300,14 @@ object CommandStickTable {
                 "anim",
                 "Play animation",
                 EFFECTS,
-                prompts = listOf(TEXT to "Animation name"),
+                prompts = listOf(TEXT to "Animation debug name"),
             )
             command(
                 "dbrow.command_stick_spot",
                 "spot",
                 "Play spotanim",
                 EFFECTS,
-                prompts = listOf(TEXT to "Spotanim name"),
+                prompts = listOf(TEXT to "Spotanim debug name"),
             )
             command(
                 "dbrow.command_stick_synth",
@@ -336,28 +346,28 @@ object CommandStickTable {
                 "varp",
                 "Set varp",
                 DEBUG,
-                prompts = listOf(TEXT to "Varp name", NUMBER to "Value"),
+                prompts = listOf(TEXT to "Varp debug name", NUMBER to "Value"),
             )
             command(
                 "dbrow.command_stick_varbit",
                 "varbit",
                 "Set varbit",
                 DEBUG,
-                prompts = listOf(TEXT to "Varbit name", NUMBER to "Value"),
+                prompts = listOf(TEXT to "Varbit debug name", NUMBER to "Value"),
             )
             command(
                 "dbrow.command_stick_getvarp",
                 "getvarp",
                 "Get varp",
                 DEBUG,
-                prompts = listOf(TEXT to "Varp name"),
+                prompts = listOf(TEXT to "Varp debug name"),
             )
             command(
                 "dbrow.command_stick_getvarbit",
                 "getvarbit",
                 "Get varbit",
                 DEBUG,
-                prompts = listOf(TEXT to "Varbit name"),
+                prompts = listOf(TEXT to "Varbit debug name"),
             )
             command(
                 "dbrow.command_stick_interface",
@@ -378,7 +388,7 @@ object CommandStickTable {
                 "testloot",
                 "Test NPC loot",
                 DEBUG,
-                prompts = listOf(TEXT to "NPC name", NUMBER to "How many kills?"),
+                prompts = listOf(TEXT to "NPC debug name (e.g. man)", NUMBER to "How many kills?"),
             )
 
             command("dbrow.command_stick_toalobby", "toalobby", "ToA: go to the lobby", BOSSES)
@@ -471,7 +481,7 @@ object CommandStickTable {
                 BOSSES,
                 prompts = mechanic,
                 description =
-                    "Divine, entomb, special, hp <percent>, p3 or siphon, in the Wardens' rooms.",
+                    "Divine, entomb, special, hp N, p3 or siphon, in the Wardens' rooms.",
             )
             command(
                 "dbrow.command_stick_doomsim",
